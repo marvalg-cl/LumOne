@@ -1,15 +1,15 @@
 // sw.js — Lumobral One Suite
 // Cache "app shell" para que la app cargue y funcione sin conexión.
 // Sube la versión (CACHE_NAME) cada vez que publiques cambios para invalidar el caché viejo.
-const CACHE_NAME = "lumobral-one-suite-v2";
+const CACHE_NAME = "lumobral-one-suite-v3";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.json",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/icon-maskable-512.png",
-  "./icons/apple-touch-icon.png",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-maskable-512.png",
+  "./apple-touch-icon.png",
 ];
 
 self.addEventListener("install", (event) => {
