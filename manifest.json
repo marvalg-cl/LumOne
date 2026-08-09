@@ -1,7 +1,7 @@
 {
-  "name": "Lumobral One Suite",
-  "short_name": "Lumobral",
-  "description": "ERP/CRM de Lumobral: cotizaciones, pedidos, órdenes de compra, empresas y proveedores.",
+  "name": "Lumo360",
+  "short_name": "Lumo360",
+  "description": "Lumo360 — CRM/ERP de Lumobral: cotizaciones, pedidos, órdenes de compra, empresas y proveedores.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
