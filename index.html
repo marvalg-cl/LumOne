@@ -401,6 +401,7 @@ const ICONS = {
   pedidos: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>',
   settings: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',
   search: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+  calculator: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/></svg>',
   history: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>',
   star: '<svg width="13" height="13" viewBox="0 0 24 24" fill="{FILL}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
   copy: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
@@ -531,6 +532,10 @@ function seedData(){
     nextPoFolio: 1,
     facturas: [],
     nextFacturaFolio: 1,
+    boletas: [],
+    nextBoletaFolio: 1,
+    guiasDespacho: [],
+    nextGuiaFolio: 1,
     nextNcFolio: 1,
     nextPedidoFolio: 1,
   };
@@ -615,10 +620,14 @@ function loadData(){
   return seed;
 }
 function migrate(d){
-  d.settings = { razonSocial:"Comercial y Constructora Lumobral SpA", rut:"78.205.813-4", direccion:"Mz H, Lote 5, Villa Cordillera, Curicó", correo:"lumobral@gmail.com", ivaRate:19, folioPrefijoCotizacion:"COT", folioPrefijoSolicitud:"SOL", folioPrefijoPedido:"PED", folioPrefijoOC:"OC", folioPrefijoFactura:"FAC", folioPrefijoNC:"NC", pinAcceso:"", correoContador1:"victorl.contador@gmail.com", correoContador2:"lumobral@gmail.com", diasPlazoPagoCliente:30, diasPlazoPagoProveedor:30, anticipoMinimoPct:0, bancoTransferencia:"Banco de Chile", tipoCuentaTransferencia:"Cuenta Vista", numeroCuentaTransferencia:"00-006-14252-17", moneda:"CLP", temaColor:"#FF5A00", logoUrl:"", backupReminderDays:7, lastBackupAt:"", notifSeguimientoDias:0, notificacionesPush:false, ejecutivos:[], ...(d.settings||{}) };
+  d.settings = { razonSocial:"Comercial y Constructora Lumobral SpA", rut:"78.205.813-4", direccion:"Mz H, Lote 5, Villa Cordillera, Curicó", correo:"lumobral@gmail.com", ivaRate:19, folioPrefijoCotizacion:"COT", folioPrefijoSolicitud:"SOL", folioPrefijoPedido:"PED", folioPrefijoOC:"OC", folioPrefijoFactura:"FAC", folioPrefijoBoleta:"BOL", folioPrefijoGuia:"GD", folioPrefijoNC:"NC", pinAcceso:"", correoContador1:"victorl.contador@gmail.com", correoContador2:"lumobral@gmail.com", diasPlazoPagoCliente:30, diasPlazoPagoProveedor:30, anticipoMinimoPct:0, bancoTransferencia:"Banco de Chile", tipoCuentaTransferencia:"Cuenta Vista", numeroCuentaTransferencia:"00-006-14252-17", moneda:"CLP", temaColor:"#FF5A00", logoUrl:"", backupReminderDays:7, lastBackupAt:"", notifSeguimientoDias:0, notificacionesPush:false, ejecutivos:[], ...(d.settings||{}) };
   d.nextNcFolio = d.nextNcFolio || 1;
   d.facturas = (d.facturas||[]).map(f=>({ estado:"generada", ...f }));
   d.nextFacturaFolio = d.nextFacturaFolio || 1;
+  d.boletas = d.boletas || [];
+  d.nextBoletaFolio = d.nextBoletaFolio || 1;
+  d.guiasDespacho = d.guiasDespacho || [];
+  d.nextGuiaFolio = d.nextGuiaFolio || 1;
   d.purchaseOrders = (d.purchaseOrders||[]).map(po=>({ quoteId:"", ...po }));
   d.companies = (d.companies||[]).map(c=>({ nombreFantasia:"", comuna:"", ciudad:"", region:"", pais:"Chile", ejecutivo:"", listaPrecio:"", clasificacion:"", estado:"activo", contactoPrincipalId:"", condicionPago:"", ...c }));
   d.obras = d.obras || [];
@@ -655,7 +664,7 @@ function migrate(d){
   });
 
   d.rfqs = (d.rfqs||[]).map(r=>({ items:[], recipients:[], notas:"", ...r, items:(r.items||[]).map(it=>({productId:"", ...it})), recipients:(r.recipients||[]).map(rec=>({ respuesta:null, ...rec })) }));
-  d.purchaseOrders = (d.purchaseOrders||[]).map(po=>({ items:[], notas:"", recibos:[], pagos:[], notasCredito:[], ...po }));
+  d.purchaseOrders = (d.purchaseOrders||[]).map(po=>({ items:[], notas:"", recibos:[], pagos:[], notasCredito:[], rutaDespacho:"", rutaDespachoDetalle:"", ...po }));
   d.nextRfqFolio = d.nextRfqFolio || 1;
   d.nextFolio = d.nextFolio || 1;
   d.nextPoFolio = d.nextPoFolio || 1;
@@ -780,6 +789,49 @@ function fmtDate(iso){ if(!iso) return ""; const d = new Date(iso); return d.toL
 function fmtDateTime(iso){ if(!iso) return ""; const d = new Date(iso); return d.toLocaleDateString("es-CL",{day:"2-digit",month:"2-digit",year:"numeric"}) + " " + d.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"}); }
 function showToast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(showToast._t); showToast._t=setTimeout(()=>t.classList.remove("show"),2200); }
 function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+// Genera un buscador de producto (input + dropdown) para usar dentro de una fila de tabla,
+// en vez del <select> nativo con cientos de opciones (que en Android se abre como un listado
+// sin buscador y no deja escribir). Cada sugerencia muestra el precio de venta.
+function productComboHTML(cls, productId, placeholder){
+  const prod = DATA.products.find(p=>p.id===productId);
+  const displayVal = prod ? `${prod.nombre}${prod.sku?` (${prod.sku})`:""} — Venta: ${fmt(prod.precioVenta)}` : "";
+  return `
+    <div style="position:relative;">
+      <input type="text" class="${cls}-display" autocomplete="off" placeholder="${esc(placeholder||'Buscar producto...')}" value="${esc(displayVal)}"/>
+      <input type="hidden" class="${cls}-id" value="${productId||''}"/>
+      <div class="${cls}-dd combo-dropdown" style="display:none;"></div>
+    </div>
+  `;
+}
+
+// Cablea el buscador de producto de una fila (tr). onSelect(productId, product|null) se llama
+// cuando se elige un producto de la lista, o con ("", null) si se borra la selección.
+function wireProductCombo(tr, cls, onSelect){
+  const display = tr.querySelector("."+cls+"-display");
+  const hidden = tr.querySelector("."+cls+"-id");
+  const dd = tr.querySelector("."+cls+"-dd");
+  if(!display) return;
+  function renderDD(query){
+    const q = query.trim().toLowerCase();
+    const matches = DATA.products.filter(p=> !q || (p.nombre+" "+(p.sku||"")+" "+(p.marca||"")).toLowerCase().includes(q)).slice(0,40);
+    dd.innerHTML = matches.length===0
+      ? `<div class="combo-item" style="color:var(--muted);cursor:default;">Sin resultados</div>`
+      : matches.map(p=>`<div class="combo-item" data-id="${p.id}">${esc(p.nombre)}${p.sku?` (${esc(p.sku)})`:''}<small>Venta: ${fmt(p.precioVenta)}${p.stock!=null?' · Stock: '+p.stock:''}</small></div>`).join("");
+    dd.querySelectorAll(".combo-item[data-id]").forEach(el=> el.addEventListener("mousedown",(e)=>{ e.preventDefault(); selectProduct(el.dataset.id); }));
+    dd.style.display = "block";
+  }
+  function selectProduct(id){
+    const prod = DATA.products.find(p=>p.id===id);
+    hidden.value = id||"";
+    display.value = prod ? `${prod.nombre}${prod.sku?` (${prod.sku})`:""} — Venta: ${fmt(prod.precioVenta)}` : "";
+    dd.style.display = "none";
+    onSelect(id||"", prod||null);
+  }
+  display.addEventListener("focus", ()=> renderDD(hidden.value ? "" : display.value));
+  display.addEventListener("input", ()=>{ if(hidden.value){ hidden.value=""; } renderDD(display.value); });
+  display.addEventListener("blur", ()=> setTimeout(()=>{ dd.style.display = "none"; }, 150));
+}
 // Avisa (notificación del navegador) sobre cotizaciones vencidas o por vencer, máximo una vez al día,
 // y solo si el usuario activó la opción en Configuración y otorgó permiso al navegador.
 function checkAndNotify(){
@@ -1366,12 +1418,19 @@ function renderReportes(){
 /* ---------------- companies ---------------- */
 
 let companyQuery = "";
+let companyRutQuery = "";
 
 function renderCompanies(){
-  const filtered = DATA.companies.filter(c => (c.razonSocial+c.rut+(c.nombreFantasia||"")).toLowerCase().includes(companyQuery.toLowerCase()));
+  const filtered = DATA.companies.filter(c =>
+    (c.razonSocial+(c.nombreFantasia||"")).toLowerCase().includes(companyQuery.toLowerCase()) &&
+    (c.rut||"").toLowerCase().includes(companyRutQuery.toLowerCase())
+  );
   return `
     ${PageHeader("Cuentas","Empresas", `${DATA.companies.length} empresas en tu cartera`, `<button class="btn btn-primary" id="newCompanyBtn">${ICONS.plus} Nueva empresa</button>`)}
-    <div class="search"><input id="companySearch" placeholder="Buscar por razón social, fantasía o RUT..." value="${esc(companyQuery)}"/></div>
+    <div class="field-row" style="margin-top:20px;max-width:600px;">
+      <div class="search" style="margin-top:0;flex:1;"><input id="companySearch" placeholder="Buscar por razón social o nombre de fantasía..." value="${esc(companyQuery)}"/></div>
+      <div class="search" style="margin-top:0;flex:1;"><input id="companyRutSearch" placeholder="Buscar por RUT..." value="${esc(companyRutQuery)}"/></div>
+    </div>
     <div class="list">
       ${filtered.length===0 ? '<div class="empty">No hay empresas que coincidan. Prueba otra búsqueda o agrega una nueva.</div>' : filtered.map(c=>{
         const contactCount = companyContacts(c.id).length;
@@ -1959,7 +2018,7 @@ function renderProducts(){
   }
 
   return `
-    ${PageHeader("Catálogo","Productos", `${DATA.products.length} productos con costo y precio vigente`, `<button class="btn btn-primary" id="newProductBtn">${ICONS.plus} Nuevo producto</button>`)}
+    ${PageHeader("Catálogo","Productos", `${DATA.products.length} productos con costo y precio vigente`, `<button class="btn btn-ghost" id="perfilCalcBtn">${ICONS.calculator||''} Calculadora de perfiles</button> <button class="btn btn-primary" id="newProductBtn">${ICONS.plus} Nuevo producto</button>`)}
     ${bajoStock.length>0 ? `<div class="empty" style="text-align:left;border-color:#F0C9A3;background:#FFF7F0;">⚠ ${bajoStock.length} producto${bajoStock.length!==1?'s':''} bajo el stock mínimo: ${bajoStock.map(p=>esc(p.nombre)).join(', ')}</div>` : ''}
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:20px;">
       <div class="search" style="margin-top:0;"><input id="productSearch" placeholder="Buscar por nombre, SKU, marca, familia, categoría o proveedor..." value="${esc(productQuery)}"/></div>
@@ -1976,6 +2035,139 @@ function renderProducts(){
       ${groupedHtml}
     </div>
   `;
+}
+
+/* ---------------- calculadora de perfiles de fierro (Core Matemático) ---------------- */
+
+const DENSIDAD_ACERO = 7.85; // kg/dm3
+
+// Devuelve el peso en kg/m de una barra de perfil, según el tipo geométrico y sus medidas en mm.
+// "desarrollo" = longitud total de las caras planas del perfil (antes de aplicar espesor y densidad).
+function calcularPesoPorMetro(tipoPerfil, A, B, e){
+  A = Number(A)||0; B = Number(B)||0; e = Number(e)||0;
+  let desarrolloMm;
+  if(tipoPerfil === "cerrado")       desarrolloMm = (A + B) * 2;      // cuadrado/rectangular tubular
+  else if(tipoPerfil === "angulo")   desarrolloMm = A + B;            // ángulo (L): dos alas
+  else if(tipoPerfil === "canal")    desarrolloMm = A + (2 * B);      // canal U: alma + dos alas
+  else if(tipoPerfil === "costanera")desarrolloMm = A + (2 * B);      // aprox. como canal U (sin contar labios)
+  else desarrolloMm = 0;
+  return (desarrolloMm * e * DENSIDAD_ACERO) / 1000;
+}
+
+const PERFIL_TIPOS = [
+  { id:"cerrado", label:"Cerrado — Cuadrado / Rectangular (tubular)" },
+  { id:"angulo", label:"Abierto — Ángulo (L)" },
+  { id:"canal", label:"Abierto — Canal U" },
+  { id:"costanera", label:"Abierto — Costanera (aprox. como Canal U)" },
+];
+
+function perfilCalculatorModal(){
+  return `
+    <div class="overlay" id="overlay">
+      <div class="modal" style="width:480px;">
+        <div class="modal-head"><div class="modal-title">Calculadora de perfiles de fierro</div><button class="modal-close" id="closeModal">${ICONS.close}</button></div>
+        <div class="modal-body">
+          <div class="hint" style="margin-bottom:12px;">Calcula el peso, costo y precio de venta de una barra de perfil a partir de sus medidas y el costo por kilo del proveedor.</div>
+          <div class="field">
+            <div class="field-label">Tipo de perfil</div>
+            <select id="pc-tipo">${PERFIL_TIPOS.map(t=>`<option value="${t.id}">${esc(t.label)}</option>`).join("")}</select>
+          </div>
+          <div class="field-row-3">
+            <div class="field"><div class="field-label">Alto A (mm)</div><input type="number" min="0" id="pc-a" value="40"/></div>
+            <div class="field"><div class="field-label">Ancho B (mm)</div><input type="number" min="0" id="pc-b" value="40"/></div>
+            <div class="field"><div class="field-label">Espesor e (mm)</div><input type="number" min="0" step="0.1" id="pc-e" value="3"/></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><div class="field-label">Largo de la barra (m)</div><input type="number" min="0" step="0.1" id="pc-largo" value="6"/></div>
+            <div class="field"><div class="field-label">Costo por kilo ($)</div><input type="number" min="0" id="pc-costoKilo" value="0"/></div>
+          </div>
+          <div class="field">
+            <div class="field-label">Margen de venta (%)</div>
+            <input type="number" min="0" id="pc-margen" value="20"/>
+          </div>
+          <div id="pc-resultado" style="margin-top:14px;background:#F7F8F7;border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;"></div>
+          <div class="field" style="margin-top:14px;">
+            <div class="field-label">Nombre (se usará en el catálogo o en la línea de cotización)</div>
+            <input type="text" id="pc-nombre" value=""/>
+          </div>
+        </div>
+        <div class="modal-foot" style="padding:0 20px 20px;flex-wrap:wrap;gap:8px;"><span></span><div class="right">
+          <button class="btn btn-ghost" id="cancelModal">Cerrar</button>
+          <button class="btn btn-ghost" id="pc-crearProducto">Crear como producto nuevo</button>
+          <button class="btn btn-primary" id="pc-usar" style="display:none;">Usar en la cotización</button>
+        </div></div>
+      </div>
+    </div>
+  `;
+}
+
+// onUse(resultado) es opcional: si se pasa, muestra el botón "Usar en la cotización" y se
+// invoca con { nombre, costo, precioVenta, unidad } al confirmar, sin crear un producto de catálogo.
+function openPerfilCalculator(onUse){
+  document.body.insertAdjacentHTML("beforeend", perfilCalculatorModal());
+  wireModalClose();
+  if(onUse) document.getElementById("pc-usar").style.display = "";
+
+  function autoNombre(){
+    const tipo = PERFIL_TIPOS.find(t=>t.id===document.getElementById("pc-tipo").value);
+    const a = document.getElementById("pc-a").value, b = document.getElementById("pc-b").value, e = document.getElementById("pc-e").value, largo = document.getElementById("pc-largo").value;
+    const etiqueta = tipo ? tipo.label.split("—")[1].trim() : "Perfil";
+    return `Perfil ${etiqueta} ${a}X${b}X${e}MM X ${largo}MT`;
+  }
+
+  function recalc(){
+    const tipo = document.getElementById("pc-tipo").value;
+    const a = document.getElementById("pc-a").value, b = document.getElementById("pc-b").value, e = document.getElementById("pc-e").value;
+    const largo = Number(document.getElementById("pc-largo").value)||0;
+    const costoKilo = Number(document.getElementById("pc-costoKilo").value)||0;
+    const margen = Number(document.getElementById("pc-margen").value)||0;
+    const pesoM = calcularPesoPorMetro(tipo, a, b, e);
+    const pesoTotal = pesoM * largo;
+    const costoTira = pesoTotal * costoKilo;
+    const precioVenta = costoTira * (1 + margen/100);
+    document.getElementById("pc-resultado").innerHTML = `
+      <div class="totals" style="align-items:stretch;">
+        <div class="line"><span>Peso por metro lineal</span><span>${pesoM.toFixed(2)} kg/m</span></div>
+        <div class="line"><span>Peso total de la barra</span><span>${pesoTotal.toFixed(2)} kg</span></div>
+        <div class="line"><span>Costo total de la tira</span><span>${fmt(costoTira)}</span></div>
+        <div class="grand"><span>Precio de venta</span><span>${fmt(precioVenta)}</span></div>
+      </div>
+    `;
+    const nombreInput = document.getElementById("pc-nombre");
+    if(!nombreInput.dataset.tocado) nombreInput.value = autoNombre();
+    return { pesoM, pesoTotal, costoTira, precioVenta };
+  }
+
+  ["pc-tipo","pc-a","pc-b","pc-e","pc-largo","pc-costoKilo","pc-margen"].forEach(id=>{
+    const el = document.getElementById(id);
+    el.addEventListener("input", recalc);
+    el.addEventListener("change", recalc);
+  });
+  document.getElementById("pc-nombre").addEventListener("input", (e)=>{ e.target.dataset.tocado = "1"; });
+  recalc();
+
+  document.getElementById("pc-crearProducto").addEventListener("click", ()=>{
+    const r = recalc();
+    const nombre = document.getElementById("pc-nombre").value.trim() || autoNombre();
+    const detalle = `Calculado con la calculadora de perfiles — ${document.getElementById("pc-tipo").value}, ${document.getElementById("pc-a").value}x${document.getElementById("pc-b").value}x${document.getElementById("pc-e").value}mm x ${document.getElementById("pc-largo").value}m, costo/kilo ${fmt(document.getElementById("pc-costoKilo").value)}.`;
+    const payload = {
+      id: uid("prod"), nombre, sku:"", codigoBarras:"", marca:"", familia:"",
+      unidad:"UN", unidadCustom:"", costo: Math.round(r.costoTira), precioVenta: Math.round(r.precioVenta),
+      ivaPorcentaje:19, stock:0, stockMinimo:0, categoria:"Perfiles", imagenUrl:"", fichaTecnicaUrl:"",
+      proveedorId:"", notas: detalle, favorito:false, movimientosStock:[],
+    };
+    DATA.products.push(payload);
+    saveData(DATA); closeModal(); render();
+    showToast(`Producto "${nombre}" creado desde la calculadora de perfiles.`);
+  });
+
+  const usarBtn = document.getElementById("pc-usar");
+  if(usarBtn) usarBtn.addEventListener("click", ()=>{
+    const r = recalc();
+    const nombre = document.getElementById("pc-nombre").value.trim() || autoNombre();
+    closeModal();
+    onUse({ nombre, costo: Math.round(r.costoTira), precioVenta: Math.round(r.precioVenta), unidad:"UN" });
+  });
 }
 
 function openProductModal(product){
@@ -2339,6 +2531,7 @@ function renderItemsTable(){
       <tbody>
         ${draftItems.map((it,i)=>{
           const prod = DATA.products.find(p=>p.id===it.productId);
+          const esManual = !it.productId;
           const precio = it.precioOverride != null ? it.precioOverride : (prod ? prod.precioVenta : 0);
           const cant = Number(it.cantidad)||0;
           const desc = Number(it.descuentoPct)||0;
@@ -2346,9 +2539,15 @@ function renderItemsTable(){
           return `
             <tr data-idx="${i}">
               <td style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--muted);">${prod&&prod.sku?esc(prod.sku):"—"}</td>
-              <td><select class="item-product"><option value="">Seleccionar...</option>${DATA.products.map(p=>`<option value="${p.id}" ${p.id===it.productId?"selected":""}>${esc(p.nombre)}</option>`).join("")}</select></td>
+              <td>
+                ${productComboHTML("qi", it.productId, "Buscar en catálogo...")}
+                ${esManual?`<input type="text" class="item-nombre-manual" value="${esc(it.nombreManual||"")}" placeholder="O escribe el nombre (línea libre, sin catálogo)" style="margin-top:6px;min-width:200px;"/><button type="button" class="btn btn-ghost btn-sm item-perfil-calc" style="margin-top:6px;">${ICONS.calculator} Calcular perfil</button>`:''}
+              </td>
               <td><input type="number" class="item-qty" min="0" value="${it.cantidad}"/></td>
-              <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${prod?esc(unitLabel(prod)):"—"}</td>
+              <td>
+                ${prod?`<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${esc(unitLabel(prod))}</span>`:`<input type="text" class="item-unidad-manual" value="${esc(it.unidadManual||"")}" placeholder="UN" style="width:70px;"/>`}
+                ${esManual?`<input type="number" class="item-costo-manual" min="0" value="${it.costoManual||0}" placeholder="Costo interno" style="margin-top:4px;width:100px;" title="Costo interno (no se muestra al cliente, solo para calcular tu margen)"/>`:''}
+              </td>
               <td>
                 <input type="number" class="item-price" min="0" value="${precio}"/>
                 ${(()=>{ const lp = prod ? lastPriceForClientProduct(document.getElementById("qb-company")?document.getElementById("qb-company").value:"", prod.id) : null;
@@ -2365,8 +2564,31 @@ function renderItemsTable(){
   `;
   wrap.querySelectorAll("tbody tr").forEach(tr=>{
     const idx = Number(tr.dataset.idx);
-    tr.querySelector(".item-product").addEventListener("change",(e)=>{
-      const newProductId = e.target.value;
+    tr.querySelector(".item-qty").addEventListener("input",(e)=>{ draftItems[idx].cantidad = e.target.value; recalcTotals(); updateRowSubtotal(idx); });
+    tr.querySelector(".item-price").addEventListener("input",(e)=>{ draftItems[idx].precioOverride = Number(e.target.value)||0; recalcTotals(); updateRowSubtotal(idx); });
+    tr.querySelector(".item-discount").addEventListener("input",(e)=>{ draftItems[idx].descuentoPct = Number(e.target.value)||0; recalcTotals(); updateRowSubtotal(idx); });
+    const nombreManualInput = tr.querySelector(".item-nombre-manual");
+    if(nombreManualInput) nombreManualInput.addEventListener("input",(e)=>{ draftItems[idx].nombreManual = e.target.value; });
+    const unidadManualInput = tr.querySelector(".item-unidad-manual");
+    if(unidadManualInput) unidadManualInput.addEventListener("input",(e)=>{ draftItems[idx].unidadManual = e.target.value; });
+    const costoManualInput = tr.querySelector(".item-costo-manual");
+    if(costoManualInput) costoManualInput.addEventListener("input",(e)=>{ draftItems[idx].costoManual = Number(e.target.value)||0; recalcTotals(); });
+    const perfilCalcBtn = tr.querySelector(".item-perfil-calc");
+    if(perfilCalcBtn) perfilCalcBtn.addEventListener("click", ()=>{
+      openPerfilCalculator((resultado)=>{
+        draftItems[idx].nombreManual = resultado.nombre;
+        draftItems[idx].unidadManual = resultado.unidad;
+        draftItems[idx].costoManual = resultado.costo;
+        draftItems[idx].precioOverride = resultado.precioVenta;
+        renderItemsTable(); recalcTotals();
+      });
+    });
+    tr.querySelector(".item-remove").addEventListener("click",()=>{
+      draftItems.splice(idx,1);
+      if(draftItems.length===0) draftItems.push({ productId:"", cantidad:1, descuentoPct:0, nombreManual:"", unidadManual:"", costoManual:0 });
+      renderItemsTable(); recalcTotals();
+    });
+    wireProductCombo(tr, "qi", (newProductId)=>{
       const existingIdx = draftItems.findIndex((it,i)=> i!==idx && it.productId===newProductId && newProductId!=="");
       if(existingIdx !== -1){
         const qtyToAdd = Number(draftItems[idx].cantidad)||1;
@@ -2377,14 +2599,6 @@ function renderItemsTable(){
         draftItems[idx].productId = newProductId;
         draftItems[idx].precioOverride = null;
       }
-      renderItemsTable(); recalcTotals();
-    });
-    tr.querySelector(".item-qty").addEventListener("input",(e)=>{ draftItems[idx].cantidad = e.target.value; recalcTotals(); updateRowSubtotal(idx); });
-    tr.querySelector(".item-price").addEventListener("input",(e)=>{ draftItems[idx].precioOverride = Number(e.target.value)||0; recalcTotals(); updateRowSubtotal(idx); });
-    tr.querySelector(".item-discount").addEventListener("input",(e)=>{ draftItems[idx].descuentoPct = Number(e.target.value)||0; recalcTotals(); updateRowSubtotal(idx); });
-    tr.querySelector(".item-remove").addEventListener("click",()=>{
-      draftItems.splice(idx,1);
-      if(draftItems.length===0) draftItems.push({ productId:"", cantidad:1, descuentoPct:0 });
       renderItemsTable(); recalcTotals();
     });
   });
@@ -2408,7 +2622,7 @@ function computeTotals(){
     const cant = Number(it.cantidad)||0;
     const desc = Number(it.descuentoPct)||0;
     subtotalItems += precio*cant*(1-desc/100);
-    costoTotal += (prod ? prod.costo : 0) * cant;
+    costoTotal += (prod ? prod.costo : (Number(it.costoManual)||0)) * cant;
   });
   const subtotal = subtotalItems * (1-descGlobal/100);
   const iva = Math.round(subtotal*(DATA.settings.ivaRate/100));
@@ -2465,7 +2679,7 @@ function openQuoteBuilder(existingQuote, presetCompanyId){
   qbCompanyDisplay.addEventListener("input", ()=> qbRenderCompanyDropdown(qbCompanyDisplay.value));
   qbCompanyDisplay.addEventListener("blur", ()=> setTimeout(()=>{ qbCompanyDropdown.style.display = "none"; }, 150));
   document.getElementById("addItemBtn").addEventListener("click",()=>{
-    draftItems.push({ productId:"", cantidad:1, descuentoPct:0 });
+    draftItems.push({ productId:"", cantidad:1, descuentoPct:0, nombreManual:"", unidadManual:"", costoManual:0 });
     renderItemsTable(); recalcTotals();
   });
   document.getElementById("qb-descuentoGlobal").addEventListener("input", recalcTotals);
@@ -2483,9 +2697,9 @@ function openQuoteBuilder(existingQuote, presetCompanyId){
     const btn = document.getElementById("saveQuote");
     if(btn.disabled) return;
     const companyId = document.getElementById("qb-company").value;
-    const validItems = draftItems.filter(it=>it.productId);
+    const validItems = draftItems.filter(it=>it.productId || (it.nombreManual&&it.nombreManual.trim()));
     if(!companyId){ showToast("Selecciona una empresa."); return; }
-    if(validItems.length===0){ showToast("Agrega al menos un producto."); return; }
+    if(validItems.length===0){ showToast("Agrega al menos un producto o una línea libre con nombre."); return; }
     btn.disabled = true;
     const { subtotal, iva, total, costoTotal, utilidad, margen, descGlobal } = computeTotals();
     const obraId = document.getElementById("qb-obra").value;
@@ -2495,7 +2709,7 @@ function openQuoteBuilder(existingQuote, presetCompanyId){
       const precio = it.precioOverride != null ? it.precioOverride : (prod ? prod.precioVenta : 0);
       const cant = Number(it.cantidad)||0;
       const desc = Number(it.descuentoPct)||0;
-      return { productId: it.productId, nombre: prod?prod.nombre:"Producto", sku: prod?(prod.sku||""):"", unidad: prod?unitLabel(prod):"", cantidad: cant, precio, descuentoPct: desc, costoUnit: prod?prod.costo:0, subtotal: precio*cant*(1-desc/100) };
+      return { productId: it.productId, nombre: prod?prod.nombre:(it.nombreManual||"Producto"), sku: prod?(prod.sku||""):"", unidad: prod?unitLabel(prod):(it.unidadManual||"UN"), cantidad: cant, precio, descuentoPct: desc, costoUnit: prod?prod.costo:(Number(it.costoManual)||0), subtotal: precio*cant*(1-desc/100) };
     });
     const validezTipo = document.getElementById("qb-validezTipo").value;
     const commonFields = {
@@ -2582,11 +2796,28 @@ function openQuoteView(quoteId){
         </div>
         <div class="hint" style="padding:0 20px;">WhatsApp y correo no permiten adjuntar un archivo automáticamente por seguridad del navegador: al presionar, primero se descarga el PDF y luego se abre la app — solo debes adjuntar el archivo recién descargado.</div>
         ${q.estado==="aceptada" ? `<div class="empty" style="text-align:left;border-color:#BEE0CB;background:#F1FAF4;margin:12px 20px 0;color:var(--good);">✓ Cotización aceptada — usa los botones de Correo o WhatsApp para avisarle al cliente ahora mismo.</div>` : ''}
+        ${q.estado==="aceptada" ? `
+          <div class="empty" style="text-align:left;margin:12px 20px 0;">
+            <b>Compra a proveedor (Back-to-Back)</b><br/>
+            <span class="hint">Genera la Orden de Compra clonando los productos y costos de esta cotización — solo falta elegir el proveedor.</span><br/>
+            <button class="btn btn-ghost btn-sm" id="qv-generar-oc" style="margin-top:8px;">${ICONS.purchaseOrders} Generar Orden de Compra</button>
+          </div>
+        ` : ''}
         ${(q.estado==="aceptada"||q.estado==="convertida_pedido") ? `
           <div class="empty" style="text-align:left;margin:12px 20px 0;">
             <b>Facturación</b><br/>
             ${(DATA.facturas.filter(f=>f.quoteId===q.id)).map(f=>`<div style="margin-top:6px;">${esc(f.folio)} — ${fmt(f.total)} · ${f.estado==="enviada"?"enviada a contabilidad":"generada"} <button class="btn btn-ghost btn-sm" data-view-factura="${f.id}" style="margin-left:8px;">Ver / reenviar</button></div>`).join("")}
             <button class="btn btn-ghost btn-sm" id="qv-generar-factura" style="margin-top:8px;">${ICONS.finanzas} Generar factura</button>
+          </div>
+          <div class="empty" style="text-align:left;margin:12px 20px 0;">
+            <b>Boleta</b><br/>
+            ${(DATA.boletas.filter(b=>b.quoteId===q.id)).map(b=>`<div style="margin-top:6px;">${esc(b.folio)} — ${fmt(b.total)} · ${b.estado==="enviada"?"enviada a contabilidad":"generada"} <button class="btn btn-ghost btn-sm" data-view-boleta="${b.id}" style="margin-left:8px;">Ver / reenviar</button></div>`).join("")}
+            <button class="btn btn-ghost btn-sm" id="qv-generar-boleta" style="margin-top:8px;">${ICONS.finanzas} Generar boleta</button>
+          </div>
+          <div class="empty" style="text-align:left;margin:12px 20px 0;">
+            <b>Guía de despacho</b><br/>
+            ${(DATA.guiasDespacho.filter(g=>g.quoteId===q.id)).map(g=>`<div style="margin-top:6px;">${esc(g.folio)} — ${esc(g.destino||'')} · ${g.estado==="enviada"?"enviada a contabilidad":"generada"} <button class="btn btn-ghost btn-sm" data-view-guia="${g.id}" style="margin-left:8px;">Ver / reenviar</button></div>`).join("")}
+            <button class="btn btn-ghost btn-sm" id="qv-generar-guia" style="margin-top:8px;">${ICONS.purchaseOrders} Generar guía de despacho</button>
           </div>
         ` : ''}
         <div class="modal-foot" style="padding:12px 20px 20px;flex-wrap:wrap;">
@@ -2608,7 +2839,22 @@ function openQuoteView(quoteId){
   document.getElementById("qv-duplicate").onclick = ()=>{ closeModal(); duplicateQuote(q); };
   const genFacturaBtn = document.getElementById("qv-generar-factura");
   if(genFacturaBtn) genFacturaBtn.onclick = ()=>{ closeModal(); openGenerarFacturaModal(q); };
+  const genBoletaBtn = document.getElementById("qv-generar-boleta");
+  if(genBoletaBtn) genBoletaBtn.onclick = ()=>{ closeModal(); openGenerarBoletaModal(q); };
+  const genGuiaBtn = document.getElementById("qv-generar-guia");
+  if(genGuiaBtn) genGuiaBtn.onclick = ()=>{ closeModal(); openGenerarGuiaModal(q); };
+  const genOcBtn = document.getElementById("qv-generar-oc");
+  if(genOcBtn) genOcBtn.onclick = ()=>{
+    const items = q.items.map(it=>({
+      productId: it.productId||"", nombre: it.nombre, unidad: it.unidad,
+      cantidad: it.cantidad, precioUnitario: it.costoUnit||0, cantidadRecibida: 0,
+    }));
+    closeModal();
+    openPurchaseOrderModal(null, { items, quoteId: q.id, notas: `Generada automáticamente desde la cotización ${q.folio} (Back-to-Back).` });
+  };
   document.querySelectorAll("[data-view-factura]").forEach(b=> b.addEventListener("click", ()=>{ closeModal(); openFacturaView(b.dataset.viewFactura); }));
+  document.querySelectorAll("[data-view-boleta]").forEach(b=> b.addEventListener("click", ()=>{ closeModal(); openBoletaView(b.dataset.viewBoleta); }));
+  document.querySelectorAll("[data-view-guia]").forEach(b=> b.addEventListener("click", ()=>{ closeModal(); openGuiaView(b.dataset.viewGuia); }));
   document.getElementById("qv-delete").onclick = ()=>{
     if(confirm("¿Eliminar esta cotización?")){
       DATA.quotes = DATA.quotes.filter(x=>x.id!==quoteId);
@@ -3036,12 +3282,19 @@ function openActivityModal(presetCompanyId){
 /* ---------------- suppliers (proveedores) ---------------- */
 
 let supplierQuery = "";
+let supplierRutQuery = "";
 
 function renderSuppliers(){
-  const filtered = DATA.suppliers.filter(s => (s.nombre+(s.rut||"")).toLowerCase().includes(supplierQuery.toLowerCase()));
+  const filtered = DATA.suppliers.filter(s =>
+    s.nombre.toLowerCase().includes(supplierQuery.toLowerCase()) &&
+    (s.rut||"").toLowerCase().includes(supplierRutQuery.toLowerCase())
+  );
   return `
     ${PageHeader("Abastecimiento","Proveedores", `${DATA.suppliers.length} proveedores registrados`, `<button class="btn btn-primary" id="newSupplierBtn">${ICONS.plus} Nuevo proveedor</button>`)}
-    <div class="search"><input id="supplierSearch" placeholder="Buscar por nombre o RUT..." value="${esc(supplierQuery)}"/></div>
+    <div class="field-row" style="margin-top:20px;max-width:600px;">
+      <div class="search" style="margin-top:0;flex:1;"><input id="supplierSearch" placeholder="Buscar por nombre..." value="${esc(supplierQuery)}"/></div>
+      <div class="search" style="margin-top:0;flex:1;"><input id="supplierRutSearch" placeholder="Buscar por RUT..." value="${esc(supplierRutQuery)}"/></div>
+    </div>
     <div class="list">
       ${filtered.length===0 ? '<div class="empty">No hay proveedores que coincidan. Prueba otra búsqueda o agrega uno nuevo.</div>' : filtered.map(s=>{
         const contCount = supplierContactsOf(s.id).length;
@@ -3289,11 +3542,8 @@ function renderRfqItemsTable(){
           return `
           <tr data-idx="${i}">
             <td>
-              <select class="rfq-item-product">
-                <option value="" ${esManual?"selected":""}>✏️ Escribir manualmente...</option>
-                ${DATA.products.map(p=>`<option value="${p.id}" ${p.id===it.productId?"selected":""}>${esc(p.nombre)}</option>`).join("")}
-              </select>
-              ${esManual?`<input type="text" class="rfq-item-nombre" value="${esc(it.nombre)}" placeholder="Nombre del producto" style="margin-top:6px;min-width:200px;"/>`:''}
+              ${productComboHTML("rfqi"+i, it.productId, "Buscar producto del catálogo...")}
+              ${esManual?`<input type="text" class="rfq-item-nombre" value="${esc(it.nombre)}" placeholder="O escribe el nombre manualmente" style="margin-top:6px;min-width:200px;"/>`:''}
             </td>
             <td>${esManual?`<input type="text" class="rfq-item-unidad" value="${esc(it.unidad)}" placeholder="BR, SC, M3..." style="width:80px;"/>`:`<span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;">${esc(it.unidad)}</span>`}</td>
             <td><input type="number" class="rfq-item-cantidad" min="0" value="${it.cantidad}" style="width:80px;"/></td>
@@ -3307,8 +3557,17 @@ function renderRfqItemsTable(){
   `;
   wrap.querySelectorAll("tbody tr").forEach(tr=>{
     const idx = Number(tr.dataset.idx);
-    tr.querySelector(".rfq-item-product").addEventListener("change",(e)=>{
-      const productId = e.target.value;
+    tr.querySelector(".rfq-item-cantidad").addEventListener("input",(e)=>{ draftRfqItems[idx].cantidad = e.target.value; });
+    const nombreInput = tr.querySelector(".rfq-item-nombre");
+    if(nombreInput) nombreInput.addEventListener("input",(e)=>{ draftRfqItems[idx].nombre = e.target.value; });
+    const unidadInput = tr.querySelector(".rfq-item-unidad");
+    if(unidadInput) unidadInput.addEventListener("input",(e)=>{ draftRfqItems[idx].unidad = e.target.value; });
+    tr.querySelector(".rfq-item-remove").addEventListener("click",()=>{
+      draftRfqItems.splice(idx,1);
+      if(draftRfqItems.length===0) draftRfqItems.push({ productId:"", nombre:"", unidad:"", cantidad:1 });
+      renderRfqItemsTable();
+    });
+    wireProductCombo(tr, "rfqi"+idx, (productId, prod)=>{
       if(productId){
         const existingIdx = draftRfqItems.findIndex((x,i)=> i!==idx && x.productId===productId);
         if(existingIdx !== -1){
@@ -3317,26 +3576,13 @@ function renderRfqItemsTable(){
           draftRfqItems.splice(idx,1);
           showToast("Ese producto ya estaba en la lista — cantidades sumadas.");
         }else{
-          const prod = DATA.products.find(p=>p.id===productId);
           draftRfqItems[idx].productId = productId;
           draftRfqItems[idx].nombre = prod.nombre;
           draftRfqItems[idx].unidad = unitLabel(prod);
         }
       }else{
         draftRfqItems[idx].productId = "";
-        draftRfqItems[idx].nombre = "";
-        draftRfqItems[idx].unidad = "";
       }
-      renderRfqItemsTable();
-    });
-    const nombreInput = tr.querySelector(".rfq-item-nombre");
-    if(nombreInput) nombreInput.addEventListener("input",(e)=>{ draftRfqItems[idx].nombre = e.target.value; });
-    const unidadInput = tr.querySelector(".rfq-item-unidad");
-    if(unidadInput) unidadInput.addEventListener("input",(e)=>{ draftRfqItems[idx].unidad = e.target.value; });
-    tr.querySelector(".rfq-item-cantidad").addEventListener("input",(e)=>{ draftRfqItems[idx].cantidad = e.target.value; });
-    tr.querySelector(".rfq-item-remove").addEventListener("click",()=>{
-      draftRfqItems.splice(idx,1);
-      if(draftRfqItems.length===0) draftRfqItems.push({ productId:"", nombre:"", unidad:"", cantidad:1 });
       renderRfqItemsTable();
     });
   });
@@ -3749,6 +3995,21 @@ function openPurchaseOrderModal(po, prefill){
           <div class="field-label" style="margin-bottom:8px;margin-top:14px;">Productos a comprar</div>
           <div id="poItemsWrap"></div>
           <button class="btn btn-ghost btn-sm" id="addPoItemBtn" style="margin-top:10px;">${ICONS.plus} Agregar línea</button>
+          <div class="field-row" style="margin-top:14px;">
+            <div class="field">
+              <div class="field-label">Ruta de despacho</div>
+              <select id="po-rutaDespacho">
+                <option value="" ${(isEdit?po.rutaDespacho:"")===""?"selected":""}>Sin definir</option>
+                <option value="retira_proveedor" ${isEdit&&po.rutaDespacho==="retira_proveedor"?"selected":""}>Retira en bodega del proveedor</option>
+                <option value="entrega_obra_cliente" ${isEdit&&po.rutaDespacho==="entrega_obra_cliente"?"selected":""}>Entrega directa en obra del cliente</option>
+                <option value="bodega_intermedia" ${isEdit&&po.rutaDespacho==="bodega_intermedia"?"selected":""}>Pasa por bodega intermedia</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label">Detalle de la ruta (dirección, referencia)</div>
+              <input type="text" id="po-rutaDespachoDetalle" value="${esc(isEdit?po.rutaDespachoDetalle:"")}" placeholder="Ej. bodega Curicó, o dirección de la obra"/>
+            </div>
+          </div>
           <div class="field" style="margin-top:18px;"><div class="field-label">Notas / condiciones</div><textarea id="po-notas" placeholder="Forma de pago, plazo de entrega acordado, etc.">${esc(isEdit?po.notas:(prefill?prefill.notas:""))}</textarea></div>
         </div>
         <div class="modal-foot" style="padding:0 20px 20px;"><span></span><div class="right">
@@ -3820,8 +4081,11 @@ function openPurchaseOrderModal(po, prefill){
     const items = validItems.map(it=>({ productId: it.productId||"", nombre: it.nombre.trim(), unidad:(it.unidad||"").trim(), cantidad: Number(it.cantidad)||0, precioUnitario: Number(it.precioUnitario)||0, cantidadRecibida: Number(it.cantidadRecibida)||0 }));
     const notas = document.getElementById("po-notas").value.trim();
     const quoteId = document.getElementById("po-quote").value || "";
+    const rutaDespacho = document.getElementById("po-rutaDespacho").value;
+    const rutaDespachoDetalle = document.getElementById("po-rutaDespachoDetalle").value.trim();
     if(isEdit){
       po.supplierId = supplierId; po.items = items; po.notas = notas; po.quoteId = quoteId;
+      po.rutaDespacho = rutaDespacho; po.rutaDespachoDetalle = rutaDespachoDetalle;
       saveData(DATA); closeModal(); render();
       showToast(`${po.folio} actualizada.`);
       openPurchaseOrderView(po.id);
@@ -3829,6 +4093,7 @@ function openPurchaseOrderModal(po, prefill){
       const folio = DATA.settings.folioPrefijoOC + "-" + String(DATA.nextPoFolio).padStart(4,"0");
       const nueva = {
         id: uid("po"), folio, supplierId, items, notas, quoteId,
+        rutaDespacho, rutaDespachoDetalle,
         rfqId: (prefill && prefill.rfqId) || "",
         estado: "borrador", fecha: new Date().toISOString(),
         recibos: [], pagos: [],
@@ -3854,11 +4119,8 @@ function renderPoItemsTable(){
           return `
           <tr data-idx="${i}">
             <td>
-              <select class="po-item-product">
-                <option value="" ${esManual?"selected":""}>✏️ Escribir manualmente...</option>
-                ${DATA.products.map(p=>`<option value="${p.id}" ${p.id===it.productId?"selected":""}>${esc(p.nombre)}</option>`).join("")}
-              </select>
-              ${esManual?`<input type="text" class="po-item-nombre" value="${esc(it.nombre)}" placeholder="Nombre del producto" style="margin-top:6px;min-width:180px;"/>`:''}
+              ${productComboHTML("poi"+i, it.productId, "Buscar producto del catálogo...")}
+              ${esManual?`<input type="text" class="po-item-nombre" value="${esc(it.nombre)}" placeholder="O escribe el nombre manualmente" style="margin-top:6px;min-width:180px;"/>`:''}
             </td>
             <td>${esManual?`<input type="text" class="po-item-unidad" value="${esc(it.unidad)}" placeholder="BR, SC..." style="width:70px;"/>`:`<span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;">${esc(it.unidad)}</span>`}</td>
             <td><input type="number" class="po-item-cantidad" min="0" value="${it.cantidad}" style="width:70px;"/></td>
@@ -3874,19 +4136,6 @@ function renderPoItemsTable(){
   `;
   wrap.querySelectorAll("tbody tr").forEach(tr=>{
     const idx = Number(tr.dataset.idx);
-    tr.querySelector(".po-item-product").addEventListener("change",(e)=>{
-      const productId = e.target.value;
-      if(productId){
-        const prod = DATA.products.find(p=>p.id===productId);
-        draftPoItems[idx].productId = productId;
-        draftPoItems[idx].nombre = prod.nombre;
-        draftPoItems[idx].unidad = unitLabel(prod);
-        draftPoItems[idx].precioUnitario = prod.costo || draftPoItems[idx].precioUnitario;
-      }else{
-        draftPoItems[idx].productId = ""; draftPoItems[idx].nombre = ""; draftPoItems[idx].unidad = "";
-      }
-      renderPoItemsTable();
-    });
     const nombreInput = tr.querySelector(".po-item-nombre");
     if(nombreInput) nombreInput.addEventListener("input",(e)=>{ draftPoItems[idx].nombre = e.target.value; });
     const unidadInput = tr.querySelector(".po-item-unidad");
@@ -3896,6 +4145,17 @@ function renderPoItemsTable(){
     tr.querySelector(".po-item-remove").addEventListener("click",()=>{
       draftPoItems.splice(idx,1);
       if(draftPoItems.length===0) draftPoItems.push({ productId:"", nombre:"", unidad:"", cantidad:1, precioUnitario:0, cantidadRecibida:0 });
+      renderPoItemsTable();
+    });
+    wireProductCombo(tr, "poi"+idx, (productId, prod)=>{
+      if(productId){
+        draftPoItems[idx].productId = productId;
+        draftPoItems[idx].nombre = prod.nombre;
+        draftPoItems[idx].unidad = unitLabel(prod);
+        draftPoItems[idx].precioUnitario = prod.costo || draftPoItems[idx].precioUnitario;
+      }else{
+        draftPoItems[idx].productId = "";
+      }
       renderPoItemsTable();
     });
   });
@@ -3928,6 +4188,7 @@ function openPurchaseOrderView(poId){
             ${detailField("Proveedor", esc(s?s.nombre:"Proveedor eliminado"))}
             ${detailField("Fecha", fmtDate(po.fecha))}
           </div>
+          ${po.rutaDespacho ? `<div class="field-row">${detailField("Ruta de despacho", esc({retira_proveedor:"Retira en bodega del proveedor",entrega_obra_cliente:"Entrega directa en obra del cliente",bodega_intermedia:"Pasa por bodega intermedia"}[po.rutaDespacho]||po.rutaDespacho))}${po.rutaDespachoDetalle?detailField("Detalle", esc(po.rutaDespachoDetalle)):''}</div>` : ''}
           <table class="items-table">
             <thead><tr><th>Producto</th><th>Cantidad</th><th>Precio unit.</th><th>Subtotal</th>${["enviada","confirmada","recepcion_parcial","recibida"].includes(po.estado)?'<th>Recibido</th>':''}</tr></thead>
             <tbody>${po.items.map((it,i)=>`
@@ -4081,7 +4342,7 @@ function renderPurchaseOrderDocHTML(po, supplier, forPrint){
         <thead><tr><th>Producto / descripción</th><th>Cantidad</th><th>Precio unit.</th><th>Subtotal</th></tr></thead>
         <tbody>${itemsRows}</tbody>
       </table>
-      <div class="doc-total"><div class="row grand">Total <span>${fmt(poTotal(po))}</span></div></div>
+      <div class="doc-totals"><div class="grand"><span>Total</span><span>${fmt(poTotal(po))}</span></div></div>
       ${po.notas ? `<div class="doc-notes"><b>Notas:</b> ${esc(po.notas)}</div>` : ""}
       <div class="doc-foot">${esc(DATA.settings.razonSocial)} · Orden de Compra generada automáticamente</div>
     </div>
@@ -4104,7 +4365,10 @@ async function downloadPurchaseOrderPDF(po, supplier){
     let y = pdfHeader(pdf, marginPt, pageW, po.folio, [`Fecha: ${fmtDate(po.fecha)}`, "Orden de Compra"]);
 
     y = pdfInfoBox(pdf, marginPt, pageW, y, {
-      lines: [`Proveedor: ${supplier?supplier.nombre:""}${supplier&&supplier.rut?` · RUT ${supplier.rut}`:""}`],
+      lines: [
+        `Proveedor: ${supplier?supplier.nombre:""}${supplier&&supplier.rut?` · RUT ${supplier.rut}`:""}`,
+        ...(po.rutaDespacho ? [`Ruta de despacho: ${({retira_proveedor:"Retira en bodega del proveedor",entrega_obra_cliente:"Entrega directa en obra del cliente",bodega_intermedia:"Pasa por bodega intermedia"})[po.rutaDespacho]||po.rutaDespacho}${po.rutaDespachoDetalle?' — '+po.rutaDespachoDetalle:''}`] : []),
+      ],
       accent: PDF_C.teal,
     });
 
@@ -4229,7 +4493,7 @@ function openNotaCreditoModal(kind, id){
           ${(record.notasCredito||[]).length ? `
             <div class="section-label">Notas de crédito registradas</div>
             <div class="activity-feed">
-              ${record.notasCredito.map(n=>`<div class="activity-item"><div class="activity-tag" style="background:#FFF3F0;color:var(--danger);">${esc(n.motivo)}</div><div style="flex:1;"><div class="activity-text">${esc(n.folio||'')} · -${fmt(n.monto)}</div><div class="activity-meta">${fmtDate(n.fecha)} ${n.detalle?'· '+esc(n.detalle):''}</div></div><button class="icon-btn" aria-label="Descargar PDF" data-nc-pdf="${n.id}" title="Descargar PDF">${ICONS.print}</button></div>`).join("")}
+              ${record.notasCredito.map(n=>`<div class="activity-item"><div class="activity-tag" style="background:#FFF3F0;color:var(--danger);">${esc(n.motivo)}</div><div style="flex:1;"><div class="activity-text">${esc(n.folio||'')} · -${fmt(n.monto)} ${n.enviada?'<span class="badge badge-aceptada" style="margin-left:4px;">Enviada a contabilidad</span>':''}</div><div class="activity-meta">${fmtDate(n.fecha)} ${n.detalle?'· '+esc(n.detalle):''}</div></div><button class="icon-btn" aria-label="Descargar PDF" data-nc-pdf="${n.id}" title="Descargar PDF">${ICONS.print}</button><button class="icon-btn" aria-label="Enviar a contabilidad" data-nc-send="${n.id}" title="Enviar a contabilidad">${ICONS.mail}</button></div>`).join("")}
             </div>
           ` : ''}
         </div>
@@ -4244,6 +4508,12 @@ function openNotaCreditoModal(kind, id){
   document.querySelectorAll("[data-nc-pdf]").forEach(b=> b.addEventListener("click", ()=>{
     const nota = (record.notasCredito||[]).find(n=>n.id===b.dataset.ncPdf);
     if(nota) downloadNotaCreditoPDF(nota, record, kind);
+  }));
+  document.querySelectorAll("[data-nc-send]").forEach(b=> b.addEventListener("click", async ()=>{
+    const nota = (record.notasCredito||[]).find(n=>n.id===b.dataset.ncSend);
+    if(!nota) return;
+    await enviarNotaCreditoAContador(nota, record, kind);
+    openNotaCreditoModal(kind, record.id);
   }));
   document.getElementById("nc-save").onclick = ()=>{
     const monto = Number(document.getElementById("nc-monto").value)||0;
@@ -4291,7 +4561,7 @@ function renderNotaCreditoDocHTML(nota, record, kind, forPrint){
         <div>Motivo: ${esc(nota.motivo)}</div>
         ${nota.detalle ? `<div>Detalle: ${esc(nota.detalle)}</div>` : ''}
       </div>
-      <div class="doc-total"><div class="row grand">Monto de la nota de crédito <span>-${fmt(nota.monto)}</span></div></div>
+      <div class="doc-totals"><div class="grand"><span>Monto de la nota de crédito</span><span>-${fmt(nota.monto)}</span></div></div>
       <div class="doc-foot">${esc(DATA.settings.razonSocial)} · Documento generado automáticamente por Lumo360 (Lumobral)</div>
     </div>
   `;
@@ -4335,6 +4605,37 @@ async function downloadNotaCreditoPDF(nota, record, kind){
     console.error(err);
     showToast("No se pudo generar el PDF automáticamente.");
   }
+}
+
+// Descarga el PDF de la nota de crédito y abre el correo (con ambos destinatarios de
+// contabilidad configurados en Ajustes) con asunto y los datos del documento, para que
+// el contador la cree en el portal del SII. El PDF hay que adjuntarlo a mano — un sitio
+// web no puede adjuntar archivos automáticamente a un correo.
+async function enviarNotaCreditoAContador(nota, record, kind){
+  const destinatarios = [DATA.settings.correoContador1, DATA.settings.correoContador2].filter(Boolean);
+  if(destinatarios.length===0){ showToast("Configura al menos un correo de contabilidad en Ajustes."); return; }
+  const isQuote = kind==="quote";
+  const company = isQuote ? DATA.companies.find(c=>c.id===record.companyId) : DATA.suppliers.find(s=>s.id===record.supplierId);
+  const companyName2 = company ? (company.razonSocial||company.nombre) : "";
+  showToast("Descargando PDF... adjúntalo en el correo que se abrirá.");
+  await downloadNotaCreditoPDF(nota, record, kind);
+  setTimeout(()=>{
+    const subject = encodeURIComponent(`Nota de Crédito ${nota.folio} para ingresar al SII`);
+    const body = encodeURIComponent(
+      `Hola,\n\nAdjunto la nota de crédito para que la ingresen al SII, con los siguientes datos:\n\n`+
+      `Folio interno: ${nota.folio}\n`+
+      `${isQuote?"Cliente":"Proveedor"}: ${companyName2}${company&&company.rut?" — RUT "+company.rut:""}\n`+
+      `Documento de referencia: ${isQuote?"Cotización":"Orden de Compra"} ${record.folio}\n`+
+      `Fecha: ${fmtDate(nota.fecha)}\n`+
+      `Motivo: ${nota.motivo}\n`+
+      (nota.detalle?`Detalle: ${nota.detalle}\n`:``)+
+      `Monto: -${fmt(nota.monto)}\n\n`+
+      `Saludos,\n${DATA.settings.razonSocial}`
+    );
+    window.location.href = `mailto:${destinatarios.join(",")}?subject=${subject}&body=${body}`;
+  }, 900);
+  nota.enviada = true; nota.enviadaEn = new Date().toISOString();
+  saveData(DATA); render();
 }
 
 function printNotaCredito(notaId, kind){
@@ -4456,6 +4757,42 @@ function renderFinanzas(){
       `).join("")}
     </div>
 
+    <div class="section-label" style="margin-top:22px;">Boletas generadas (${DATA.boletas.length})</div>
+    <div class="list">
+      ${DATA.boletas.length===0 ? '<div class="empty">Aún no generas boletas. Ábrelas desde una cotización aceptada.</div>' : DATA.boletas.slice().sort((a,b)=>b.fecha.localeCompare(a.fecha)).map(b=>`
+        <div class="row-card">
+          <div class="row-main">
+            <div class="avatar">${esc((b.folio||"BO").slice(-2))}</div>
+            <div>
+              <div class="row-title">${esc(b.folio)} <span class="badge badge-${b.estado==="enviada"?"ganado":"pendiente"}" style="margin-left:6px;">${b.estado==="enviada"?"Enviada":"Generada"}</span></div>
+              <div class="row-sub">${esc(companyName(b.companyId))} · ${fmt(b.total)} · ${fmtDate(b.fecha)}</div>
+            </div>
+          </div>
+          <div class="row-actions">
+            <button class="icon-btn" aria-label="Ver / reenviar" data-view-boleta-fin="${b.id}" title="Ver / reenviar">${ICONS.eye}</button>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+
+    <div class="section-label" style="margin-top:22px;">Guías de despacho generadas (${DATA.guiasDespacho.length})</div>
+    <div class="list">
+      ${DATA.guiasDespacho.length===0 ? '<div class="empty">Aún no generas guías de despacho. Ábrelas desde una cotización aceptada.</div>' : DATA.guiasDespacho.slice().sort((a,b)=>b.fecha.localeCompare(a.fecha)).map(g=>`
+        <div class="row-card">
+          <div class="row-main">
+            <div class="avatar">${esc((g.folio||"GD").slice(-2))}</div>
+            <div>
+              <div class="row-title">${esc(g.folio)} <span class="badge badge-${g.estado==="enviada"?"ganado":"pendiente"}" style="margin-left:6px;">${g.estado==="enviada"?"Enviada":"Generada"}</span></div>
+              <div class="row-sub">${esc(companyName(g.companyId))} · ${esc(g.destino||'—')} · ${fmtDate(g.fecha)}</div>
+            </div>
+          </div>
+          <div class="row-actions">
+            <button class="icon-btn" aria-label="Ver / reenviar" data-view-guia-fin="${g.id}" title="Ver / reenviar">${ICONS.eye}</button>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+
     <div class="section-label" style="margin-top:22px;">Notas de crédito (${todasLasNC.length})</div>
     <div class="list">
       ${todasLasNC.length===0 ? '<div class="empty">Aún no generas notas de crédito. Se registran desde las Cuentas por cobrar/pagar de arriba.</div>' : todasLasNC.map(({nota, record, kind})=>`
@@ -4463,13 +4800,14 @@ function renderFinanzas(){
           <div class="row-main">
             <div class="avatar" style="background:#FFF3F0;color:var(--danger);">${esc((nota.folio||"NC").slice(-2))}</div>
             <div>
-              <div class="row-title">${esc(nota.folio)} <span class="badge" style="margin-left:6px;background:#FFF3F0;color:var(--danger);">${kind==="quote"?"Cliente":"Proveedor"}</span></div>
+              <div class="row-title">${esc(nota.folio)} <span class="badge" style="margin-left:6px;background:#FFF3F0;color:var(--danger);">${kind==="quote"?"Cliente":"Proveedor"}</span> ${nota.enviada?'<span class="badge badge-aceptada" style="margin-left:4px;">Enviada</span>':''}</div>
               <div class="row-sub">${kind==="quote"?esc(companyName(record.companyId)):esc((DATA.suppliers.find(s=>s.id===record.supplierId)||{}).nombre||"Proveedor eliminado")} · Ref. ${esc(record.folio)} · -${fmt(nota.monto)} · ${fmtDate(nota.fecha)}</div>
               <div class="row-sub">${esc(nota.motivo)}${nota.detalle?' · '+esc(nota.detalle):''}</div>
             </div>
           </div>
           <div class="row-actions">
             <button class="icon-btn" aria-label="Descargar PDF" data-nc-pdf-fin="${kind}:${nota.id}" title="Descargar PDF">${ICONS.print}</button>
+            <button class="icon-btn" aria-label="Enviar a contabilidad" data-nc-send-fin="${kind}:${nota.id}" title="Enviar a contabilidad">${ICONS.mail}</button>
           </div>
         </div>
       `).join("")}
@@ -4543,10 +4881,10 @@ function renderFacturaDocHTML(factura, quote, forPrint){
         <thead><tr><th>Producto / descripción</th><th>Cantidad</th><th>Precio unit.</th><th>Subtotal</th></tr></thead>
         <tbody>${itemsRows}</tbody>
       </table>
-      <div class="doc-total">
+      <div class="doc-totals">
         <div class="line"><span>Subtotal</span><span>${fmt(factura.subtotal)}</span></div>
         <div class="line"><span>IVA (${factura.ivaRate||19}%)</span><span>${fmt(factura.iva)}</span></div>
-        <div class="row grand">Total <span>${fmt(factura.total)}</span></div>
+        <div class="grand"><span>Total</span><span>${fmt(factura.total)}</span></div>
       </div>
       <div class="doc-foot">${esc(DATA.settings.razonSocial)} · Documento generado automáticamente por Lumo360 (Lumobral)</div>
     </div>
@@ -4636,6 +4974,350 @@ function openFacturaView(facturaId){
     }, 900);
     factura.estado = "enviada"; factura.enviadaEn = new Date().toISOString();
     saveData(DATA); closeModal(); render(); openFacturaView(factura.id);
+  };
+}
+
+function openGenerarBoletaModal(quote){
+  const folioSugerido = DATA.settings.folioPrefijoBoleta + "-" + String(DATA.nextBoletaFolio).padStart(4,"0");
+  document.body.insertAdjacentHTML("beforeend", `
+    <div class="overlay" id="overlay">
+      <div class="modal">
+        <div class="modal-head"><div class="modal-title">Generar boleta — ${esc(quote.folio)}</div><button class="modal-close" id="closeModal">${ICONS.close}</button></div>
+        <div class="modal-body">
+          <div class="field"><div class="field-label">N° de folio</div><input type="text" id="gb-folio" value="${esc(folioSugerido)}"/></div>
+          <div class="hint" style="margin-bottom:12px;">Escribe aquí el mismo número que le vas a asignar en el SII, así los dos quedan calzados y son fáciles de cotejar.</div>
+          <div class="field"><div class="field-label">Fecha</div><input type="date" id="gb-fecha" value="${new Date().toISOString().slice(0,10)}"/></div>
+          <div class="hint">Total de la boleta: <b>${fmt(quote.total)}</b></div>
+        </div>
+        <div class="modal-foot" style="padding:0 20px 20px;"><span></span><div class="right">
+          <button class="btn btn-ghost" id="cancelModal">Cancelar</button>
+          <button class="btn btn-primary" id="gb-save">Generar boleta</button>
+        </div></div>
+      </div>
+    </div>
+  `);
+  wireModalClose();
+  document.getElementById("gb-save").onclick = ()=>{
+    const folio = document.getElementById("gb-folio").value.trim();
+    if(!folio){ showToast("Ingresa un número de folio."); return; }
+    const fecha = document.getElementById("gb-fecha").value || new Date().toISOString().slice(0,10);
+    const boleta = {
+      id: uid("bol"), folio, quoteId: quote.id, companyId: quote.companyId,
+      fecha: new Date(fecha).toISOString(), subtotal: quote.subtotal, iva: quote.iva, total: quote.total,
+      ivaRate: quote.ivaRate, estado: "generada", enviadaEn: "",
+    };
+    DATA.boletas.push(boleta);
+    DATA.nextBoletaFolio = siguienteFolioDesde(folio, DATA.nextBoletaFolio);
+    saveData(DATA); closeModal(); render();
+    showToast(`${folio} generada. Este documento es un borrador — tu contador debe emitirla en el SII.`);
+    openBoletaView(boleta.id);
+  };
+}
+
+function renderBoletaDocHTML(boleta, quote, forPrint){
+  const company = DATA.companies.find(c=>c.id===boleta.companyId);
+  const itemsRows = (quote?.items||[]).map(it=>`<tr><td>${esc(it.nombre)}</td><td class="num">${it.cantidad} ${esc(it.unidad||"")}</td><td class="num">${fmt(it.precio)}</td><td class="num">${fmt(it.subtotal)}</td></tr>`).join("");
+  return `
+    <div class="${forPrint?"doc":""}" style="${forPrint?"":"border:1px solid var(--border-soft);border-radius:10px;padding:24px;margin-top:16px;background:#fff;"}">
+      <div style="background:#FFF3F0;border:1px solid #F0C9A3;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-family:'Inter',sans-serif;font-size:11.5px;color:#8A4116;">
+        ⚠ Documento de referencia interna — <b>no es una Boleta Electrónica válida ante el SII</b>. Debe ser timbrada y emitida por quien administra la facturación electrónica de la empresa.
+      </div>
+      <div class="doc-head">
+        <div class="doc-brand">
+          <img src="${DATA.settings.logoUrl || ''}" alt="${esc(DATA.settings.razonSocial)}" style="width:110px;height:auto;display:block;${DATA.settings.logoUrl?'':'display:none;'}"/>
+          <div><div class="doc-brand-legal"><b>${esc(DATA.settings.razonSocial)}</b><br/>RUT ${esc(DATA.settings.rut)}<br/>${esc(DATA.settings.direccion)}<br/>${esc(DATA.settings.correo)}</div></div>
+        </div>
+        <div class="doc-folio">
+          <div class="n">${esc(boleta.folio)}</div>
+          <div class="d">Fecha: ${fmtDate(boleta.fecha)}</div>
+          <div class="d">Boleta (borrador para SII)</div>
+        </div>
+      </div>
+      <div class="doc-client">
+        <div>Cliente: <b>${esc(company?company.razonSocial:"Consumidor final")}</b> ${company&&company.rut?`· RUT ${esc(company.rut)}`:''}</div>
+        ${quote?`<div>Referencia: Cotización ${esc(quote.folio)}</div>`:''}
+      </div>
+      <table class="doc-table">
+        <thead><tr><th>Producto / descripción</th><th>Cantidad</th><th>Precio unit.</th><th>Subtotal</th></tr></thead>
+        <tbody>${itemsRows}</tbody>
+      </table>
+      <div class="doc-totals">
+        <div class="line"><span>Subtotal</span><span>${fmt(boleta.subtotal)}</span></div>
+        <div class="line"><span>IVA (${boleta.ivaRate||19}%)</span><span>${fmt(boleta.iva)}</span></div>
+        <div class="grand"><span>Total</span><span>${fmt(boleta.total)}</span></div>
+      </div>
+      <div class="doc-foot">${esc(DATA.settings.razonSocial)} · Documento generado automáticamente por Lumo360 (Lumobral)</div>
+    </div>
+  `;
+}
+
+async function downloadBoletaPDF(boleta, quote){
+  if(typeof window.jspdf === "undefined"){
+    showToast("No se pudo cargar el generador de PDF (requiere internet la primera vez).");
+    return;
+  }
+  showToast("Generando PDF…");
+  try{
+    const company = DATA.companies.find(c=>c.id===boleta.companyId);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p","pt","letter");
+    const marginPt = 40;
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+
+    let y = marginPt;
+    y = pdfWarningBox(pdf, marginPt, pageW, y, "Documento de referencia interna — no es una Boleta Electrónica válida ante el SII. Debe ser timbrada y emitida por quien administra la facturación electrónica de la empresa.");
+    y = pdfHeader(pdf, marginPt, pageW, boleta.folio, [`Fecha: ${fmtDate(boleta.fecha)}`, "Boleta (borrador para SII)"], y);
+
+    const lines = [`Cliente: ${company?company.razonSocial:"Consumidor final"}${company&&company.rut?` · RUT ${company.rut}`:""}`];
+    if(quote) lines.push(`Referencia: Cotización ${quote.folio}`);
+    y = pdfInfoBox(pdf, marginPt, pageW, y, { lines, accent: PDF_C.teal });
+
+    const body = (quote?.items||[]).map(it=>[it.nombre, `${it.cantidad} ${it.unidad||""}`.trim(), fmt(it.precio), fmt(it.subtotal)]);
+    y = pdfItemsTable(pdf, marginPt, y, ["Producto / descripción","Cantidad","Precio unit.","Subtotal"], body, [1,2,3]);
+
+    y = pdfTotals(pdf, marginPt, pageW, y, [
+      { label:"Subtotal", value: fmt(boleta.subtotal) },
+      { label:`IVA (${boleta.ivaRate||19}%)`, value: fmt(boleta.iva) },
+    ], { label:"Total", value: fmt(boleta.total) });
+
+    pdfFooter(pdf, pageW, pageH, `${DATA.settings.razonSocial} · Documento generado automáticamente por Lumo360 (Lumobral)`);
+    pdf.save(`${boleta.folio}.pdf`);
+  }catch(err){
+    console.error(err);
+    showToast("No se pudo generar el PDF automáticamente.");
+  }
+}
+
+function printBoleta(boletaId){
+  const boleta = DATA.boletas.find(x=>x.id===boletaId);
+  if(!boleta) return;
+  const quote = DATA.quotes.find(x=>x.id===boleta.quoteId);
+  document.getElementById("printArea").innerHTML = renderBoletaDocHTML(boleta, quote, true);
+  window.print();
+}
+
+function openBoletaView(boletaId){
+  const boleta = DATA.boletas.find(x=>x.id===boletaId);
+  if(!boleta) return;
+  const quote = DATA.quotes.find(x=>x.id===boleta.quoteId);
+  document.body.insertAdjacentHTML("beforeend", `
+    <div class="overlay" id="overlay">
+      <div class="modal wide">
+        <div class="modal-head"><div class="modal-title">${esc(boleta.folio)} <span class="badge badge-${boleta.estado==="enviada"?"ganado":"pendiente"}" style="margin-left:8px;">${boleta.estado==="enviada"?"Enviada a contabilidad":"Generada"}</span></div><button class="modal-close" id="closeModal">${ICONS.close}</button></div>
+        <div class="modal-body">
+          ${renderBoletaDocHTML(boleta, quote)}
+        </div>
+        <div class="hint" style="padding:0 20px;">Al enviar, se descarga el PDF y se abre tu app de correo con ambos destinatarios — solo adjunta el archivo recién descargado.</div>
+        <div class="modal-foot" style="padding:12px 20px 20px;flex-wrap:wrap;"><span></span>
+          <div class="right">
+            <button class="btn btn-ghost btn-sm" id="bv-download">${ICONS.print} Descargar PDF</button>
+            <button class="btn btn-ghost btn-sm" id="bv-print">${ICONS.print} Imprimir</button>
+            <button class="btn btn-primary btn-sm" id="bv-send">${ICONS.mail} Enviar a contabilidad</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+  wireModalClose();
+  document.getElementById("bv-download").onclick = ()=> downloadBoletaPDF(boleta, quote);
+  document.getElementById("bv-print").onclick = ()=> printBoleta(boleta.id);
+  document.getElementById("bv-send").onclick = async ()=>{
+    const destinatarios = [DATA.settings.correoContador1, DATA.settings.correoContador2].filter(Boolean);
+    if(destinatarios.length===0){ showToast("Configura al menos un correo de contabilidad en Ajustes."); return; }
+    showToast("Descargando PDF... adjúntalo en el correo que se abrirá.");
+    await downloadBoletaPDF(boleta, quote);
+    setTimeout(()=>{
+      const subject = encodeURIComponent(`Boleta ${boleta.folio} para ingresar al SII`);
+      const body = encodeURIComponent(`Hola,\n\nAdjunto la boleta ${boleta.folio} por ${fmt(boleta.total)} (cliente: ${quote?companyName(quote.companyId):''}) para que la ingresen al SII.\n\nSaludos,\n${DATA.settings.razonSocial}`);
+      window.location.href = `mailto:${destinatarios.join(",")}?subject=${subject}&body=${body}`;
+    }, 900);
+    boleta.estado = "enviada"; boleta.enviadaEn = new Date().toISOString();
+    saveData(DATA); closeModal(); render(); openBoletaView(boleta.id);
+  };
+}
+
+/* ---------------- guías de despacho (para envío a contabilidad / SII) ---------------- */
+
+const TIPOS_TRASLADO_GUIA = [
+  { id:"venta", label:"Venta" },
+  { id:"traslado_interno", label:"Traslado interno" },
+  { id:"consignacion", label:"Consignación" },
+  { id:"otro", label:"Otro" },
+];
+
+function openGenerarGuiaModal(quote){
+  const folioSugerido = DATA.settings.folioPrefijoGuia + "-" + String(DATA.nextGuiaFolio).padStart(4,"0");
+  const obra = DATA.obras.find(o=>o.id===quote.obraId);
+  const destinoSugerido = obra ? `${obra.nombre}${obra.direccion?' — '+obra.direccion:''}` : "";
+  document.body.insertAdjacentHTML("beforeend", `
+    <div class="overlay" id="overlay">
+      <div class="modal">
+        <div class="modal-head"><div class="modal-title">Generar guía de despacho — ${esc(quote.folio)}</div><button class="modal-close" id="closeModal">${ICONS.close}</button></div>
+        <div class="modal-body">
+          <div class="field"><div class="field-label">N° de folio</div><input type="text" id="gg-folio" value="${esc(folioSugerido)}"/></div>
+          <div class="hint" style="margin-bottom:12px;">Escribe aquí el mismo número que le vas a asignar en el SII, así los dos quedan calzados.</div>
+          <div class="field-row">
+            <div class="field"><div class="field-label">Fecha</div><input type="date" id="gg-fecha" value="${new Date().toISOString().slice(0,10)}"/></div>
+            <div class="field"><div class="field-label">Tipo de traslado</div><select id="gg-tipo">${TIPOS_TRASLADO_GUIA.map(t=>`<option value="${t.id}">${esc(t.label)}</option>`).join("")}</select></div>
+          </div>
+          <div class="field"><div class="field-label">Dirección de origen</div><input type="text" id="gg-origen" value="${esc(DATA.settings.direccion||'')}"/></div>
+          <div class="field"><div class="field-label">Dirección de destino</div><input type="text" id="gg-destino" value="${esc(destinoSugerido)}" placeholder="Dirección de la obra o del cliente"/></div>
+          <div class="hint">Los productos y cantidades se copian automáticamente de la cotización ${esc(quote.folio)}.</div>
+        </div>
+        <div class="modal-foot" style="padding:0 20px 20px;"><span></span><div class="right">
+          <button class="btn btn-ghost" id="cancelModal">Cancelar</button>
+          <button class="btn btn-primary" id="gg-save">Generar guía</button>
+        </div></div>
+      </div>
+    </div>
+  `);
+  wireModalClose();
+  document.getElementById("gg-save").onclick = ()=>{
+    const folio = document.getElementById("gg-folio").value.trim();
+    if(!folio){ showToast("Ingresa un número de folio."); return; }
+    const fecha = document.getElementById("gg-fecha").value || new Date().toISOString().slice(0,10);
+    const guia = {
+      id: uid("gd"), folio, quoteId: quote.id, companyId: quote.companyId,
+      fecha: new Date(fecha).toISOString(),
+      tipoTraslado: document.getElementById("gg-tipo").value,
+      origen: document.getElementById("gg-origen").value.trim(),
+      destino: document.getElementById("gg-destino").value.trim(),
+      items: quote.items.map(it=>({ nombre: it.nombre, cantidad: it.cantidad, unidad: it.unidad, precio: it.precio })),
+      total: quote.total,
+      estado: "generada", enviadaEn: "",
+    };
+    DATA.guiasDespacho.push(guia);
+    DATA.nextGuiaFolio = siguienteFolioDesde(folio, DATA.nextGuiaFolio);
+    saveData(DATA); closeModal(); render();
+    showToast(`${folio} generada. Este documento es un borrador — tu contador debe emitirla en el SII.`);
+    openGuiaView(guia.id);
+  };
+}
+
+function renderGuiaDocHTML(guia, forPrint){
+  const company = DATA.companies.find(c=>c.id===guia.companyId);
+  const tipoLabel = (TIPOS_TRASLADO_GUIA.find(t=>t.id===guia.tipoTraslado)||{}).label || guia.tipoTraslado;
+  const itemsRows = (guia.items||[]).map(it=>`<tr><td>${esc(it.nombre)}</td><td class="num">${it.cantidad} ${esc(it.unidad||"")}</td><td class="num">${fmt(it.precio)}</td><td class="num">${fmt((Number(it.precio)||0)*(Number(it.cantidad)||0))}</td></tr>`).join("");
+  return `
+    <div class="${forPrint?"doc":""}" style="${forPrint?"":"border:1px solid var(--border-soft);border-radius:10px;padding:24px;margin-top:16px;background:#fff;"}">
+      <div style="background:#FFF3F0;border:1px solid #F0C9A3;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-family:'Inter',sans-serif;font-size:11.5px;color:#8A4116;">
+        ⚠ Documento de referencia interna — <b>no es una Guía de Despacho Electrónica válida ante el SII</b>. Debe ser timbrada y emitida por quien administra la facturación electrónica de la empresa.
+      </div>
+      <div class="doc-head">
+        <div class="doc-brand">
+          <img src="${DATA.settings.logoUrl || ''}" alt="${esc(DATA.settings.razonSocial)}" style="width:110px;height:auto;display:block;${DATA.settings.logoUrl?'':'display:none;'}"/>
+          <div><div class="doc-brand-legal"><b>${esc(DATA.settings.razonSocial)}</b><br/>RUT ${esc(DATA.settings.rut)}<br/>${esc(DATA.settings.direccion)}<br/>${esc(DATA.settings.correo)}</div></div>
+        </div>
+        <div class="doc-folio">
+          <div class="n">${esc(guia.folio)}</div>
+          <div class="d">Fecha: ${fmtDate(guia.fecha)}</div>
+          <div class="d">Guía de Despacho (borrador para SII)</div>
+        </div>
+      </div>
+      <div class="doc-client">
+        <div>Cliente: <b>${esc(company?company.razonSocial:"")}</b> ${company&&company.rut?`· RUT ${esc(company.rut)}`:''}</div>
+        <div>Tipo de traslado: ${esc(tipoLabel)}</div>
+        <div>Origen: ${esc(guia.origen||"—")}</div>
+        <div>Destino: ${esc(guia.destino||"—")}</div>
+      </div>
+      <table class="doc-table">
+        <thead><tr><th>Producto / descripción</th><th>Cantidad</th><th>Precio unit.</th><th>Subtotal</th></tr></thead>
+        <tbody>${itemsRows}</tbody>
+      </table>
+      <div class="doc-totals">
+        <div class="grand"><span>Total</span><span>${fmt(guia.total)}</span></div>
+      </div>
+      <div class="doc-foot">${esc(DATA.settings.razonSocial)} · Documento generado automáticamente por Lumo360 (Lumobral)</div>
+    </div>
+  `;
+}
+
+async function downloadGuiaPDF(guia){
+  if(typeof window.jspdf === "undefined"){
+    showToast("No se pudo cargar el generador de PDF (requiere internet la primera vez).");
+    return;
+  }
+  showToast("Generando PDF…");
+  try{
+    const company = DATA.companies.find(c=>c.id===guia.companyId);
+    const tipoLabel = (TIPOS_TRASLADO_GUIA.find(t=>t.id===guia.tipoTraslado)||{}).label || guia.tipoTraslado;
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p","pt","letter");
+    const marginPt = 40;
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+
+    let y = marginPt;
+    y = pdfWarningBox(pdf, marginPt, pageW, y, "Documento de referencia interna — no es una Guía de Despacho Electrónica válida ante el SII. Debe ser timbrada y emitida por quien administra la facturación electrónica de la empresa.");
+    y = pdfHeader(pdf, marginPt, pageW, guia.folio, [`Fecha: ${fmtDate(guia.fecha)}`, "Guía de Despacho (borrador para SII)"], y);
+
+    y = pdfInfoBox(pdf, marginPt, pageW, y, {
+      accent: PDF_C.teal,
+      lines: [
+        `Cliente: ${company?company.razonSocial:""}${company&&company.rut?` · RUT ${company.rut}`:""}`,
+        `Tipo de traslado: ${tipoLabel}`,
+        `Origen: ${guia.origen||"—"}`,
+        `Destino: ${guia.destino||"—"}`,
+      ],
+    });
+
+    const body = (guia.items||[]).map(it=>[it.nombre, `${it.cantidad} ${it.unidad||""}`.trim(), fmt(it.precio), fmt((Number(it.precio)||0)*(Number(it.cantidad)||0))]);
+    y = pdfItemsTable(pdf, marginPt, y, ["Producto / descripción","Cantidad","Precio unit.","Subtotal"], body, [1,2,3]);
+
+    y = pdfTotals(pdf, marginPt, pageW, y, [], { label:"Total", value: fmt(guia.total) });
+
+    pdfFooter(pdf, pageW, pageH, `${DATA.settings.razonSocial} · Documento generado automáticamente por Lumo360 (Lumobral)`);
+    pdf.save(`${guia.folio}.pdf`);
+  }catch(err){
+    console.error(err);
+    showToast("No se pudo generar el PDF automáticamente.");
+  }
+}
+
+function printGuia(guiaId){
+  const guia = DATA.guiasDespacho.find(x=>x.id===guiaId);
+  if(!guia) return;
+  document.getElementById("printArea").innerHTML = renderGuiaDocHTML(guia, true);
+  window.print();
+}
+
+function openGuiaView(guiaId){
+  const guia = DATA.guiasDespacho.find(x=>x.id===guiaId);
+  if(!guia) return;
+  document.body.insertAdjacentHTML("beforeend", `
+    <div class="overlay" id="overlay">
+      <div class="modal wide">
+        <div class="modal-head"><div class="modal-title">${esc(guia.folio)} <span class="badge badge-${guia.estado==="enviada"?"ganado":"pendiente"}" style="margin-left:8px;">${guia.estado==="enviada"?"Enviada a contabilidad":"Generada"}</span></div><button class="modal-close" id="closeModal">${ICONS.close}</button></div>
+        <div class="modal-body">
+          ${renderGuiaDocHTML(guia)}
+        </div>
+        <div class="hint" style="padding:0 20px;">Al enviar, se descarga el PDF y se abre tu app de correo con ambos destinatarios — solo adjunta el archivo recién descargado.</div>
+        <div class="modal-foot" style="padding:12px 20px 20px;flex-wrap:wrap;"><span></span>
+          <div class="right">
+            <button class="btn btn-ghost btn-sm" id="gv-download">${ICONS.print} Descargar PDF</button>
+            <button class="btn btn-ghost btn-sm" id="gv-print">${ICONS.print} Imprimir</button>
+            <button class="btn btn-primary btn-sm" id="gv-send">${ICONS.mail} Enviar a contabilidad</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+  wireModalClose();
+  document.getElementById("gv-download").onclick = ()=> downloadGuiaPDF(guia);
+  document.getElementById("gv-print").onclick = ()=> printGuia(guia.id);
+  document.getElementById("gv-send").onclick = async ()=>{
+    const destinatarios = [DATA.settings.correoContador1, DATA.settings.correoContador2].filter(Boolean);
+    if(destinatarios.length===0){ showToast("Configura al menos un correo de contabilidad en Ajustes."); return; }
+    showToast("Descargando PDF... adjúntalo en el correo que se abrirá.");
+    await downloadGuiaPDF(guia);
+    setTimeout(()=>{
+      const subject = encodeURIComponent(`Guía de Despacho ${guia.folio} para ingresar al SII`);
+      const body = encodeURIComponent(`Hola,\n\nAdjunto la guía de despacho ${guia.folio} (cliente: ${companyName(guia.companyId)}, destino: ${guia.destino||'—'}) para que la ingresen al SII.\n\nSaludos,\n${DATA.settings.razonSocial}`);
+      window.location.href = `mailto:${destinatarios.join(",")}?subject=${subject}&body=${body}`;
+    }, 900);
+    guia.estado = "enviada"; guia.enviadaEn = new Date().toISOString();
+    saveData(DATA); closeModal(); render(); openGuiaView(guia.id);
   };
 }
 
@@ -4956,13 +5638,17 @@ function renderSettings(){
       <div class="hint" style="margin-bottom:8px;">Con un PIN activo, cualquiera que abra este archivo deberá ingresarlo antes de ver tus datos. No es un reemplazo de una cuenta con contraseña real — solo evita accesos casuales.</div>
       ${s.pinAcceso ? `<button class="btn btn-ghost btn-sm" id="s-lockNow">${ICONS.settings} Bloquear ahora</button>` : ''}
 
-      <div class="section-label">Contabilidad (facturas)</div>
-      <div class="hint" style="margin-bottom:8px;">Las facturas que generes desde una cotización aceptada se envían a estos correos como PDF para que las ingresen manualmente al SII. Este archivo no emite Documentos Tributarios Electrónicos.</div>
+      <div class="section-label">Contabilidad (facturas, boletas, guías y notas de crédito)</div>
+      <div class="hint" style="margin-bottom:8px;">Los documentos que generes desde una cotización aceptada se envían a estos correos como PDF para que se ingresen manualmente al SII. Este archivo no emite Documentos Tributarios Electrónicos.</div>
       <div class="field-row">
         <div class="field"><div class="field-label">Correo contador/a</div><input type="email" id="s-correoContador1" value="${esc(s.correoContador1)}"/></div>
         <div class="field"><div class="field-label">Correo empresa</div><input type="email" id="s-correoContador2" value="${esc(s.correoContador2)}"/></div>
       </div>
-      <div class="field" style="max-width:220px;"><div class="field-label">Prefijo folio factura</div><input type="text" id="s-folioFac" value="${esc(s.folioPrefijoFactura||'FAC')}"/></div>
+      <div class="field-row-3">
+        <div class="field"><div class="field-label">Prefijo folio factura</div><input type="text" id="s-folioFac" value="${esc(s.folioPrefijoFactura||'FAC')}"/></div>
+        <div class="field"><div class="field-label">Prefijo folio boleta</div><input type="text" id="s-folioBol" value="${esc(s.folioPrefijoBoleta||'BOL')}"/></div>
+        <div class="field"><div class="field-label">Prefijo folio guía</div><input type="text" id="s-folioGuia" value="${esc(s.folioPrefijoGuia||'GD')}"/></div>
+      </div>
 
       <div class="section-label">Reglas de tesorería</div>
       <div class="field-row">
@@ -5141,6 +5827,8 @@ function wireSettingsEvents(){
       correoContador1: document.getElementById("s-correoContador1").value.trim(),
       correoContador2: document.getElementById("s-correoContador2").value.trim(),
       folioPrefijoFactura: document.getElementById("s-folioFac").value.trim().toUpperCase()||"FAC",
+      folioPrefijoBoleta: document.getElementById("s-folioBol").value.trim().toUpperCase()||"BOL",
+      folioPrefijoGuia: document.getElementById("s-folioGuia").value.trim().toUpperCase()||"GD",
       diasPlazoPagoCliente: Math.max(0, Number(document.getElementById("s-plazoCliente").value)||30),
       diasPlazoPagoProveedor: Math.max(0, Number(document.getElementById("s-plazoProveedor").value)||30),
       anticipoMinimoPct: Math.min(100, Math.max(0, Number(document.getElementById("s-anticipoMinimo").value)||0)),
@@ -5331,6 +6019,7 @@ function attachPageEvents(){
     }
   }));
   wireSearchInput("companySearch", (v)=>{ companyQuery = v; });
+  wireSearchInput("companyRutSearch", (v)=>{ companyRutQuery = v; });
 
   const newContactBtn = document.getElementById("newContactBtn");
   if(newContactBtn) newContactBtn.addEventListener("click", ()=> openContactModal(null));
@@ -5357,6 +6046,8 @@ function attachPageEvents(){
 
   const newProductBtn = document.getElementById("newProductBtn");
   if(newProductBtn) newProductBtn.addEventListener("click", ()=> openProductModal(null));
+  const perfilCalcBtn = document.getElementById("perfilCalcBtn");
+  if(perfilCalcBtn) perfilCalcBtn.addEventListener("click", ()=> openPerfilCalculator());
   document.querySelectorAll("[data-view-product]").forEach(b=> b.addEventListener("click", ()=> openProductDetail(b.dataset.viewProduct)));
   document.querySelectorAll("[data-edit-product]").forEach(b=> b.addEventListener("click", ()=> openProductModal(DATA.products.find(p=>p.id===b.dataset.editProduct))));
   document.querySelectorAll("[data-del-product]").forEach(b=> b.addEventListener("click", ()=>{
@@ -5405,6 +6096,7 @@ function attachPageEvents(){
     }
   }));
   wireSearchInput("supplierSearch", (v)=>{ supplierQuery = v; });
+  wireSearchInput("supplierRutSearch", (v)=>{ supplierRutQuery = v; });
 
   const newRfqBtn = document.getElementById("newRfqBtn");
   if(newRfqBtn) newRfqBtn.addEventListener("click", ()=> openRfqBuilder());
@@ -5434,12 +6126,21 @@ function attachPageEvents(){
     openNotaCreditoModal(kind, id);
   }));
   document.querySelectorAll("[data-view-factura-fin]").forEach(btn=> btn.addEventListener("click", ()=> openFacturaView(btn.dataset.viewFacturaFin)));
+  document.querySelectorAll("[data-view-boleta-fin]").forEach(btn=> btn.addEventListener("click", ()=> openBoletaView(btn.dataset.viewBoletaFin)));
+  document.querySelectorAll("[data-view-guia-fin]").forEach(btn=> btn.addEventListener("click", ()=> openGuiaView(btn.dataset.viewGuiaFin)));
   document.querySelectorAll("[data-nc-pdf-fin]").forEach(btn=> btn.addEventListener("click", ()=>{
     const [kind, notaId] = btn.dataset.ncPdfFin.split(":");
     const record = kind==="quote" ? DATA.quotes.find(x=>(x.notasCredito||[]).some(n=>n.id===notaId)) : DATA.purchaseOrders.find(x=>(x.notasCredito||[]).some(n=>n.id===notaId));
     if(!record) return;
     const nota = record.notasCredito.find(n=>n.id===notaId);
     if(nota) downloadNotaCreditoPDF(nota, record, kind);
+  }));
+  document.querySelectorAll("[data-nc-send-fin]").forEach(btn=> btn.addEventListener("click", async ()=>{
+    const [kind, notaId] = btn.dataset.ncSendFin.split(":");
+    const record = kind==="quote" ? DATA.quotes.find(x=>(x.notasCredito||[]).some(n=>n.id===notaId)) : DATA.purchaseOrders.find(x=>(x.notasCredito||[]).some(n=>n.id===notaId));
+    if(!record) return;
+    const nota = record.notasCredito.find(n=>n.id===notaId);
+    if(nota) await enviarNotaCreditoAContador(nota, record, kind);
   }));
 
   document.querySelectorAll("[data-view-pedido]").forEach(b=> b.addEventListener("click", ()=> openPedidoView(b.dataset.viewPedido)));
