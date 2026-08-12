@@ -258,6 +258,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -620,7 +621,7 @@ function loadData(){
   return seed;
 }
 function migrate(d){
-  d.settings = { razonSocial:"Comercial y Constructora Lumobral SpA", rut:"78.205.813-4", direccion:"Mz H, Lote 5, Villa Cordillera, Curicó", correo:"lumobral@gmail.com", ivaRate:19, folioPrefijoCotizacion:"COT", folioPrefijoSolicitud:"SOL", folioPrefijoPedido:"PED", folioPrefijoOC:"OC", folioPrefijoFactura:"FAC", folioPrefijoBoleta:"BOL", folioPrefijoGuia:"GD", folioPrefijoNC:"NC", pinAcceso:"", correoContador1:"victorl.contador@gmail.com", correoContador2:"lumobral@gmail.com", diasPlazoPagoCliente:30, diasPlazoPagoProveedor:30, anticipoMinimoPct:0, bancoTransferencia:"Banco de Chile", tipoCuentaTransferencia:"Cuenta Vista", numeroCuentaTransferencia:"00-006-14252-17", moneda:"CLP", temaColor:"#FF5A00", logoUrl:"", backupReminderDays:7, lastBackupAt:"", notifSeguimientoDias:0, notificacionesPush:false, ejecutivos:[], ...(d.settings||{}) };
+  d.settings = { razonSocial:"Comercial y Constructora Lumobral SpA", rut:"78.205.813-4", direccion:"Mz H, Lote 5, Villa Cordillera, Curicó", correo:"lumobral@gmail.com", ivaRate:19, folioPrefijoCotizacion:"COT", folioPrefijoSolicitud:"SOL", folioPrefijoPedido:"PED", folioPrefijoOC:"OC", folioPrefijoFactura:"FAC", folioPrefijoBoleta:"BOL", folioPrefijoGuia:"GD", folioPrefijoNC:"NC", pinAcceso:"", correoContador1:"victorl.contador@gmail.com", correoContador2:"lumobral@gmail.com", diasPlazoPagoCliente:30, diasPlazoPagoProveedor:30, anticipoMinimoPct:0, bancoTransferencia:"Banco de Chile", tipoCuentaTransferencia:"Cuenta Vista", numeroCuentaTransferencia:"00-006-14252-17", moneda:"CLP", temaColor:"#FF5A00", logoUrl:"", backupReminderDays:7, lastBackupAt:"", notifSeguimientoDias:0, notificacionesPush:false, driveClientId:"", driveAutoUpload:false, ejecutivos:[], ...(d.settings||{}) };
   d.nextNcFolio = d.nextNcFolio || 1;
   d.facturas = (d.facturas||[]).map(f=>({ estado:"generada", ...f }));
   d.nextFacturaFolio = d.nextFacturaFolio || 1;
@@ -795,12 +796,13 @@ function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&am
 // sin buscador y no deja escribir). Cada sugerencia muestra el precio de venta.
 function productComboHTML(cls, productId, placeholder){
   const prod = DATA.products.find(p=>p.id===productId);
-  const displayVal = prod ? `${prod.nombre}${prod.sku?` (${prod.sku})`:""} — Venta: ${fmt(prod.precioVenta)}` : "";
+  const displayVal = prod ? `${prod.nombre}${prod.sku?` (${prod.sku})`:""}` : "";
   return `
     <div style="position:relative;">
       <input type="text" class="${cls}-display" autocomplete="off" placeholder="${esc(placeholder||'Buscar producto...')}" value="${esc(displayVal)}"/>
       <input type="hidden" class="${cls}-id" value="${productId||''}"/>
       <div class="${cls}-dd combo-dropdown" style="display:none;"></div>
+      ${prod?`<div class="hint ${cls}-precio-hint" style="margin-top:2px;white-space:nowrap;">Venta: ${fmt(prod.precioVenta)}</div>`:`<div class="hint ${cls}-precio-hint" style="margin-top:2px;display:none;"></div>`}
     </div>
   `;
 }
@@ -811,6 +813,7 @@ function wireProductCombo(tr, cls, onSelect){
   const display = tr.querySelector("."+cls+"-display");
   const hidden = tr.querySelector("."+cls+"-id");
   const dd = tr.querySelector("."+cls+"-dd");
+  const precioHint = tr.querySelector("."+cls+"-precio-hint");
   if(!display) return;
   function renderDD(query){
     const q = query.trim().toLowerCase();
@@ -824,8 +827,12 @@ function wireProductCombo(tr, cls, onSelect){
   function selectProduct(id){
     const prod = DATA.products.find(p=>p.id===id);
     hidden.value = id||"";
-    display.value = prod ? `${prod.nombre}${prod.sku?` (${prod.sku})`:""} — Venta: ${fmt(prod.precioVenta)}` : "";
+    display.value = prod ? `${prod.nombre}${prod.sku?` (${prod.sku})`:""}` : "";
     dd.style.display = "none";
+    if(precioHint){
+      if(prod){ precioHint.textContent = `Venta: ${fmt(prod.precioVenta)}`; precioHint.style.display = ""; }
+      else{ precioHint.textContent = ""; precioHint.style.display = "none"; }
+    }
     onSelect(id||"", prod||null);
   }
   display.addEventListener("focus", ()=> renderDD(hidden.value ? "" : display.value));
@@ -1073,6 +1080,136 @@ function importJSON(){
     reader.readAsText(file);
   };
   input.click();
+}
+
+/* ============================================================
+   GOOGLE DRIVE — respaldo de documentos generados (PDF)
+   Usa Google Identity Services (GIS), el método vigente de Google para
+   pedir tokens de acceso desde el navegador sin backend. NO usa gapi.auth2
+   (ese método está obsoleto desde 2023 y Google ya no acepta Client ID
+   nuevos que lo usen).
+   El token de acceso vive solo en memoria durante la sesión — no se guarda
+   en el dispositivo por seguridad. Hay que reconectar cada vez que se abre
+   la app (toma 2 clics, ya que Google recuerda el permiso otorgado).
+   ============================================================ */
+const DRIVE_SCOPE = "https://www.googleapis.com/auth/drive.file";
+let driveAccessToken = "";
+let driveTokenClient = null;
+let driveFolderCache = {}; // cachea ids de carpeta ya creadas/encontradas en esta sesión, para no repetir búsquedas
+
+function driveIsConnected(){ return !!driveAccessToken; }
+
+function connectDrive(){
+  const clientId = (DATA.settings.driveClientId||"").trim();
+  if(!clientId){ showToast("Primero pega tu Client ID de Google en Configuración → Google Drive."); return; }
+  if(typeof google === "undefined" || !google.accounts || !google.accounts.oauth2){
+    showToast("Google todavía no ha cargado. Espera unos segundos (necesita internet) e intenta de nuevo.");
+    return;
+  }
+  if(!driveTokenClient || driveTokenClient.__clientId !== clientId){
+    driveTokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: DRIVE_SCOPE,
+      callback: async (resp)=>{
+        if(resp.error){ showToast("No se pudo conectar con Google Drive: "+resp.error); return; }
+        driveAccessToken = resp.access_token;
+        showToast("Conectando con Google Drive…");
+        const rootId = await driveEnsureFolder("Lumo360 - Documentos", null);
+        if(rootId){ showToast("✓ Google Drive conectado."); }
+        else{ driveAccessToken = ""; showToast("Se conectó la cuenta pero no se pudo crear la carpeta en Drive."); }
+        render();
+      },
+    });
+    driveTokenClient.__clientId = clientId;
+  }
+  driveTokenClient.requestAccessToken({ prompt: driveAccessToken ? "" : "consent" });
+}
+
+function disconnectDrive(){
+  if(driveAccessToken && typeof google !== "undefined" && google.accounts && google.accounts.oauth2){
+    google.accounts.oauth2.revoke(driveAccessToken, ()=>{});
+  }
+  driveAccessToken = ""; driveFolderCache = {};
+  render();
+  showToast("Google Drive desconectado.");
+}
+
+// Busca (o crea si no existe) una carpeta por nombre dentro de otra carpeta (o en la raíz si parentId es null).
+async function driveEnsureFolder(name, parentId){
+  const cacheKey = (parentId||"root")+"/"+name;
+  if(driveFolderCache[cacheKey]) return driveFolderCache[cacheKey];
+  try{
+    const parentClause = parentId ? ` and '${parentId}' in parents` : " and 'root' in parents";
+    const q = encodeURIComponent(`name='${name.replace(/'/g,"\\'")}' and mimeType='application/vnd.google-apps.folder' and trashed=false${parentClause}`);
+    const listRes = await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)&spaces=drive`, {
+      headers: { Authorization: `Bearer ${driveAccessToken}` },
+    });
+    if(!listRes.ok) throw new Error("list "+listRes.status);
+    const listData = await listRes.json();
+    let folder = listData.files && listData.files[0];
+    if(!folder){
+      const createRes = await fetch("https://www.googleapis.com/drive/v3/files?fields=id", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${driveAccessToken}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ name, mimeType: "application/vnd.google-apps.folder", parents: parentId ? [parentId] : undefined }),
+      });
+      if(!createRes.ok) throw new Error("create "+createRes.status);
+      folder = await createRes.json();
+    }
+    driveFolderCache[cacheKey] = folder.id;
+    return folder.id;
+  }catch(err){
+    console.error("Drive folder error:", err);
+    return null;
+  }
+}
+
+// Sube un archivo a Drive dentro de Lumo360 - Documentos / <Año> / <Mes> / <tipoCarpeta> / archivo
+async function uploadToDrive(fileName, mimeType, blob, tipoCarpeta){
+  if(!driveIsConnected()) return false;
+  try{
+    const now = new Date();
+    const rootId = await driveEnsureFolder("Lumo360 - Documentos", null);
+    if(!rootId) return false;
+    const yearId = await driveEnsureFolder(String(now.getFullYear()), rootId);
+    const monthId = await driveEnsureFolder(String(now.getMonth()+1).padStart(2,"0"), yearId);
+    const typeId = await driveEnsureFolder(tipoCarpeta, monthId);
+    if(!typeId) return false;
+
+    const metadata = { name: fileName, parents: [typeId], mimeType };
+    const form = new FormData();
+    form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+    form.append("file", blob);
+
+    const uploadRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${driveAccessToken}` },
+      body: form,
+    });
+    if(!uploadRes.ok){
+      if(uploadRes.status === 401){ driveAccessToken = ""; showToast("Tu sesión de Google Drive expiró — conéctala de nuevo en Configuración."); }
+      throw new Error("upload "+uploadRes.status);
+    }
+    return true;
+  }catch(err){
+    console.error("Drive upload error:", err);
+    return false;
+  }
+}
+
+// Envuelve un pdf.save(...) para además, si Drive está conectado y activada la subida
+// automática, subir el mismo PDF a la carpeta correspondiente. No bloquea ni retrasa
+// la descarga local: el PDF se guarda en el dispositivo igual, y la subida a Drive
+// ocurre en paralelo mostrando un aviso si falla.
+function guardarPdfLocalYDrive(pdf, fileName, tipoCarpeta){
+  pdf.save(fileName);
+  if(driveIsConnected() && DATA.settings.driveAutoUpload){
+    const blob = pdf.output("blob");
+    uploadToDrive(fileName, "application/pdf", blob, tipoCarpeta).then(ok=>{
+      if(ok) showToast(`${fileName} también se guardó en Google Drive.`);
+      else showToast(`${fileName} se descargó, pero no se pudo subir a Google Drive.`);
+    });
+  }
 }
 
 function render(){
@@ -2527,7 +2664,7 @@ function renderItemsTable(){
   const wrap = document.getElementById("itemsWrap");
   wrap.innerHTML = `
     <table class="items-table">
-      <thead><tr><th>SKU</th><th>Producto</th><th>Cant.</th><th>U/Vta</th><th>Precio unit.</th><th>Desc. %</th><th>Subtotal</th><th></th></tr></thead>
+      <thead><tr><th style="width:48px;">SKU</th><th>Producto</th><th style="width:64px;">Cant.</th><th style="width:60px;">U/Vta</th><th style="width:110px;">Precio unit.</th><th style="width:64px;">Desc. %</th><th style="width:100px;">Subtotal</th><th style="width:32px;"></th></tr></thead>
       <tbody>
         ${draftItems.map((it,i)=>{
           const prod = DATA.products.find(p=>p.id===it.productId);
@@ -3151,7 +3288,7 @@ async function downloadQuotePDF(q){
     }
 
     pdfFooter(pdf, pageW, pageH, "Lumobral · Tu aliado en la obra — Cotización generada automáticamente");
-    pdf.save(`${q.folio}.pdf`);
+    guardarPdfLocalYDrive(pdf, `${q.folio}.pdf`, "Cotizaciones");
   }catch(err){
     console.error(err);
     showToast("No se pudo generar el PDF automáticamente. Usa 'Imprimir' y elige 'Guardar como PDF'.");
@@ -3535,7 +3672,7 @@ function renderRfqItemsTable(){
   const wrap = document.getElementById("rfqItemsWrap");
   wrap.innerHTML = `
     <table class="items-table">
-      <thead><tr><th>Producto</th><th>Unidad</th><th>Cantidad</th><th></th></tr></thead>
+      <thead><tr><th>Producto</th><th style="width:90px;">Unidad</th><th style="width:80px;">Cantidad</th><th style="width:32px;"></th></tr></thead>
       <tbody>
         ${draftRfqItems.map((it,i)=>{
           const esManual = !it.productId;
@@ -3714,7 +3851,7 @@ async function downloadRfqPDF(r, supplier){
     }
 
     pdfFooter(pdf, pageW, pageH, "Lumobral · Solicitud de cotización generada automáticamente");
-    pdf.save(`${r.folio}-${(supplier?supplier.nombre:'proveedor').replace(/[^a-z0-9]+/gi,'-')}.pdf`);
+    guardarPdfLocalYDrive(pdf, `${r.folio}-${(supplier?supplier.nombre:'proveedor').replace(/[^a-z0-9]+/gi,'-')}.pdf`, "Solicitudes");
   }catch(err){
     console.error(err);
     showToast("No se pudo generar el PDF automáticamente.");
@@ -4111,7 +4248,7 @@ function renderPoItemsTable(){
   const wrap = document.getElementById("poItemsWrap");
   wrap.innerHTML = `
     <table class="items-table">
-      <thead><tr><th>Producto</th><th>Unidad</th><th>Cantidad</th><th>Precio unitario</th><th>Subtotal</th><th></th></tr></thead>
+      <thead><tr><th>Producto</th><th style="width:80px;">Unidad</th><th style="width:70px;">Cantidad</th><th style="width:110px;">Precio unitario</th><th style="width:100px;">Subtotal</th><th style="width:32px;"></th></tr></thead>
       <tbody>
         ${draftPoItems.map((it,i)=>{
           const esManual = !it.productId;
@@ -4385,7 +4522,7 @@ async function downloadPurchaseOrderPDF(po, supplier){
     }
 
     pdfFooter(pdf, pageW, pageH, `${DATA.settings.razonSocial} · Orden de Compra generada automáticamente`);
-    pdf.save(`${po.folio}-${(supplier?supplier.nombre:'proveedor').replace(/[^a-z0-9]+/gi,'-')}.pdf`);
+    guardarPdfLocalYDrive(pdf, `${po.folio}-${(supplier?supplier.nombre:'proveedor').replace(/[^a-z0-9]+/gi,'-')}.pdf`, "Ordenes de Compra");
   }catch(err){
     console.error(err);
     showToast("No se pudo generar el PDF automáticamente.");
@@ -4600,7 +4737,7 @@ async function downloadNotaCreditoPDF(nota, record, kind){
     y = pdfTotals(pdf, marginPt, pageW, y, [], { label:"Monto de la nota de crédito", value: `-${fmt(nota.monto)}` });
 
     pdfFooter(pdf, pageW, pageH, `${DATA.settings.razonSocial} · Documento generado automáticamente por Lumo360 (Lumobral)`);
-    pdf.save(`${nota.folio}.pdf`);
+    guardarPdfLocalYDrive(pdf, `${nota.folio}.pdf`, "Notas de Credito");
   }catch(err){
     console.error(err);
     showToast("No se pudo generar el PDF automáticamente.");
@@ -4922,7 +5059,7 @@ async function downloadFacturaPDF(factura, quote){
     ], { label:"Total", value: fmt(factura.total) });
 
     pdfFooter(pdf, pageW, pageH, `${DATA.settings.razonSocial} · Documento generado automáticamente por Lumo360 (Lumobral)`);
-    pdf.save(`${factura.folio}.pdf`);
+    guardarPdfLocalYDrive(pdf, `${factura.folio}.pdf`, "Facturas");
   }catch(err){
     console.error(err);
     showToast("No se pudo generar el PDF automáticamente.");
@@ -5082,7 +5219,7 @@ async function downloadBoletaPDF(boleta, quote){
     ], { label:"Total", value: fmt(boleta.total) });
 
     pdfFooter(pdf, pageW, pageH, `${DATA.settings.razonSocial} · Documento generado automáticamente por Lumo360 (Lumobral)`);
-    pdf.save(`${boleta.folio}.pdf`);
+    guardarPdfLocalYDrive(pdf, `${boleta.folio}.pdf`, "Boletas");
   }catch(err){
     console.error(err);
     showToast("No se pudo generar el PDF automáticamente.");
@@ -5268,7 +5405,7 @@ async function downloadGuiaPDF(guia){
     y = pdfTotals(pdf, marginPt, pageW, y, [], { label:"Total", value: fmt(guia.total) });
 
     pdfFooter(pdf, pageW, pageH, `${DATA.settings.razonSocial} · Documento generado automáticamente por Lumo360 (Lumobral)`);
-    pdf.save(`${guia.folio}.pdf`);
+    guardarPdfLocalYDrive(pdf, `${guia.folio}.pdf`, "Guias de Despacho");
   }catch(err){
     console.error(err);
     showToast("No se pudo generar el PDF automáticamente.");
@@ -5618,6 +5755,34 @@ function renderSettings(){
         </div>
       </div>
 
+      <div class="section-label">Google Drive — respaldo de documentos</div>
+      <div class="hint" style="margin-bottom:10px;">Guarda automáticamente en tu Google Drive (organizado por Año / Mes / Tipo de documento) cada PDF que generes: cotizaciones, facturas, boletas, notas de crédito, guías de despacho, solicitudes y órdenes de compra. Es independiente del respaldo JSON de arriba.</div>
+      <div class="field"><div class="field-label">Client ID de Google (OAuth)</div><input type="text" id="s-driveClientId" value="${esc(s.driveClientId||'')}" placeholder="xxxxxxxxxx.apps.googleusercontent.com"/>
+        <div class="hint">Se crea gratis en <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">Google Cloud Console</a>. Toca "?" para el paso a paso.</div>
+      </div>
+      <div class="field-row" style="align-items:center;">
+        <div class="field" style="flex:none;">
+          <button class="btn btn-ghost btn-sm" id="s-driveConnect" type="button">${driveIsConnected()?'Reconectar':'Conectar Google Drive'}</button>
+          ${driveIsConnected()?`<button class="btn btn-ghost btn-sm" id="s-driveDisconnect" type="button" style="margin-left:6px;">Desconectar</button>`:''}
+        </div>
+        <div class="field" style="flex:none;">
+          <span class="badge badge-${driveIsConnected()?'ganado':'pendiente'}">${driveIsConnected()?'Conectado':'No conectado'}</span>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:8px;">
+        <input type="checkbox" id="s-driveAutoUpload" ${s.driveAutoUpload?"checked":""}/>
+        <span class="field-label" style="margin:0;">Subir automáticamente cada PDF que genere a Google Drive</span>
+      </label>
+      <div class="hint" id="s-driveHelp" style="margin-top:10px;cursor:pointer;color:var(--orange);text-decoration:underline;">¿Cómo consigo el Client ID? (guía paso a paso)</div>
+      <div id="s-driveHelpBox" class="hint" style="display:none;margin-top:8px;background:#F7F8F7;border:1px solid var(--border);border-radius:8px;padding:12px 14px;line-height:1.8;">
+        1. Entra a <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noopener">console.cloud.google.com/apis/credentials</a> con lumobral@gmail.com.<br/>
+        2. Crea un proyecto nuevo (o usa uno existente) → "Crear credenciales" → "ID de cliente de OAuth".<br/>
+        3. Tipo de aplicación: "Aplicación web".<br/>
+        4. En "Orígenes de JavaScript autorizados" agrega exactamente la URL donde vive tu app (ej. https://marvalg-cl.github.io).<br/>
+        5. Guarda y copia el "Client ID" (termina en .apps.googleusercontent.com) — pégalo arriba.<br/>
+        6. La primera vez que conectes, Google puede avisar "app no verificada" — es normal en apps propias; toca "Avanzado" → "Ir a Lumo360 (no seguro)" para continuar.
+      </div>
+
       <div class="section-label">Ejecutivos comerciales</div>
       <div class="hint" style="margin-bottom:8px;">Aparecen como sugerencia al asignar un ejecutivo a una empresa, y se usan para el reporte de ventas por ejecutivo.</div>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
@@ -5729,6 +5894,26 @@ function wireSettingsEvents(){
   if(!btn) return;
   wireRutInput("s-rut", "s-rut-hint");
 
+  const driveConnectBtn = document.getElementById("s-driveConnect");
+  if(driveConnectBtn) driveConnectBtn.addEventListener("click", ()=>{
+    DATA.settings.driveClientId = document.getElementById("s-driveClientId").value.trim();
+    saveData(DATA);
+    connectDrive();
+  });
+  const driveDisconnectBtn = document.getElementById("s-driveDisconnect");
+  if(driveDisconnectBtn) driveDisconnectBtn.addEventListener("click", disconnectDrive);
+  const driveAutoUploadCheckbox = document.getElementById("s-driveAutoUpload");
+  if(driveAutoUploadCheckbox) driveAutoUploadCheckbox.addEventListener("change", ()=>{
+    DATA.settings.driveAutoUpload = driveAutoUploadCheckbox.checked;
+    saveData(DATA);
+    if(driveAutoUploadCheckbox.checked && !driveIsConnected()) showToast("Recuerda conectar Google Drive para que la subida automática funcione.");
+  });
+  const driveHelpToggle = document.getElementById("s-driveHelp");
+  if(driveHelpToggle) driveHelpToggle.addEventListener("click", ()=>{
+    const box = document.getElementById("s-driveHelpBox");
+    box.style.display = box.style.display==="none" ? "block" : "none";
+  });
+
   const notifCheckbox = document.getElementById("s-notifPush");
   if(notifCheckbox) notifCheckbox.addEventListener("change", ()=>{
     if(notifCheckbox.checked && "Notification" in window && Notification.permission !== "granted"){
@@ -5822,6 +6007,8 @@ function wireSettingsEvents(){
       temaColor: document.getElementById("s-temaColor").value || "#FF5A00",
       notifSeguimientoDias: Math.max(0, Number(document.getElementById("s-notifDias").value)||0),
       notificacionesPush: !!document.getElementById("s-notifPush")?.checked,
+      driveClientId: document.getElementById("s-driveClientId")?.value.trim() || "",
+      driveAutoUpload: !!document.getElementById("s-driveAutoUpload")?.checked,
       backupReminderDays: Math.max(1, Number(document.getElementById("s-backupDias").value)||7),
       pinAcceso: document.getElementById("s-pin").value.trim(),
       correoContador1: document.getElementById("s-correoContador1").value.trim(),

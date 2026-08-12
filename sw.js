@@ -1,7 +1,7 @@
 // sw.js — Lumobral One Suite
 // Cache "app shell" para que la app cargue y funcione sin conexión.
 // Sube la versión (CACHE_NAME) cada vez que publiques cambios para invalidar el caché viejo.
-const CACHE_NAME = "lumobral-one-suite-v11";
+const CACHE_NAME = "lumobral-one-suite-v13";
 const ASSETS = [
   "./",
   "./index.html",
